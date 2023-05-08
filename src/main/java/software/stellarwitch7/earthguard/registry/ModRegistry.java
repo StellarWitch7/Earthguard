@@ -10,7 +10,6 @@ import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-import software.stellarwitch7.example.ExampleMod;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,35 +45,35 @@ public class ModRegistry {
 		loadRegistry();
 		
 		//Register blocks
-		ExampleMod.LOGGER.info("Registering " + ExampleMod.MOD_ID + " blocks");
+		EarthguardMod.LOGGER.info("Registering " + EarthguardMod.MOD_ID + " blocks");
 		for (RegistrableBlock data : registryBlocks) {
-			ExampleMod.LOGGER.info("Registering block <"
-					+ ExampleMod.MOD_ID + ":"
+			EarthguardMod.LOGGER.info("Registering block <"
+					+ EarthguardMod.MOD_ID + ":"
 					+ data.id + ">");
 			Registry.register(Registry.BLOCK,
-					new Identifier(ExampleMod.MOD_ID, data.id),
+					new Identifier(EarthguardMod.MOD_ID, data.id),
 					data.block);
 		}
 		
 		//Register status effects
-		ExampleMod.LOGGER.info("Registering " + ExampleMod.MOD_ID + " status effects");
+		EarthguardMod.LOGGER.info("Registering " + EarthguardMod.MOD_ID + " status effects");
 		for (RegistrableStatusEffect data : registryEffects) {
-			ExampleMod.LOGGER.info("Registering effect <"
-					+ ExampleMod.MOD_ID + ":"
+			EarthguardMod.LOGGER.info("Registering effect <"
+					+ EarthguardMod.MOD_ID + ":"
 					+ data.id + ">");
 			Registry.register(Registry.STATUS_EFFECT,
-					new Identifier(ExampleMod.MOD_ID, data.id),
+					new Identifier(EarthguardMod.MOD_ID, data.id),
 					data.effect);
 		}
 		
 		//Register items
-		ExampleMod.LOGGER.info("Registering " + ExampleMod.MOD_ID + " items");
+		EarthguardMod.LOGGER.info("Registering " + EarthguardMod.MOD_ID + " items");
 		for (RegistrableItem data : registryItems) {
-			ExampleMod.LOGGER.info("Registering item <"
-					+ ExampleMod.MOD_ID + ":"
+			EarthguardMod.LOGGER.info("Registering item <"
+					+ EarthguardMod.MOD_ID + ":"
 					+ data.id + ">");
 			Registry.register(Registry.ITEM,
-					new Identifier(ExampleMod.MOD_ID, data.id),
+					new Identifier(EarthguardMod.MOD_ID, data.id),
 					data.item);
 		}
 	}

@@ -9,7 +9,6 @@ import software.stellarwitch7.earthguard.registry.registrable.RegistrableItem;
 import software.stellarwitch7.earthguard.registry.registrable.RegistrableStatusEffect;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
-import software.stellarwitch7.example.ExampleMod;
 
 public class ModLanguageGenerator {
 	public static void generate() {
@@ -26,8 +25,8 @@ class UkEnglishLangProvider extends FabricLanguageProvider {
 	
 	@Override
 	public void generateTranslations(TranslationBuilder translationBuilder) {
-		translationBuilder.add(ExampleMod.ITEM_GROUP,
-				StringUtils.capitalize(ExampleMod.MOD_ID));
+		translationBuilder.add(EarthguardMod.ITEM_GROUP,
+				StringUtils.capitalize(EarthguardMod.MOD_ID));
 		
 		//Generate block translations
 		for (RegistrableBlock data : ModRegistry.publicRegistryBlocks) {
@@ -54,8 +53,8 @@ class UsEnglishLangProvider extends FabricLanguageProvider {
 	
 	@Override
 	public void generateTranslations(TranslationBuilder translationBuilder) {
-		translationBuilder.add(ExampleMod.ITEM_GROUP,
-				StringUtils.capitalize(ExampleMod.MOD_ID));
+		translationBuilder.add(EarthguardMod.ITEM_GROUP,
+				StringUtils.capitalize(EarthguardMod.MOD_ID));
 		
 		//Generate block translations
 		for (RegistrableBlock data : ModRegistry.publicRegistryBlocks) {
