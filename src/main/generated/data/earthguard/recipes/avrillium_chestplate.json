@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "earthguard:avrillium_ingot"
+    },
+    "I": {
+      "item": "earthguard:steel_chestplate"
+    }
+  },
+  "pattern": [
+    "#I#",
+    "###",
+    "###"
+  ],
+  "result": {
+    "item": "earthguard:avrillium_chestplate"
+  }
+}
