@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "id": "example",
+  "version": "${version}",
+
+  "name": "Example",
+  "description": "A template for my Fabric mods.",
+  "authors": [
+    "StellarWitch7"
+  ],
+  "contact": {
+    "sources": "https://github.com/StellarWitch7/Fabristar-Template"
+  },
+
+  "license": "ARR",
+  "icon": "assets/example/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "software.stellarwitch7.example.ExampleMod"
+    ],
+    "client": [
+      "software.stellarwitch7.example.ExampleClient"
+    ],
+    "server": [
+      "software.stellarwitch7.example.ExampleServer"
+    ],
+    "fabric-datagen": [
+      "software.stellarwitch7.example.ExampleDataGenerator"
+    ]
+  },
+  "mixins": [
+    "example.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.14.19",
+    "fabric-api": "*",
+    "minecraft": "~1.19.2",
+    "java": ">=17"
+  }
+}
