@@ -1,5 +1,6 @@
 package com.github.stellarwitch7.earthguard.registry;
 
+import com.github.stellarwitch7.earthguard.item.weapon.CursedSwordItem;
 import com.github.stellarwitch7.earthguard.item.weapon.EarthCannonItem;
 import com.github.stellarwitch7.earthguard.EarthguardMod;
 import com.github.stellarwitch7.earthguard.item.armour.AvrilliumArmourItem;
@@ -12,6 +13,7 @@ import com.github.stellarwitch7.earthguard.material.armour.AvrilliumArmourMateri
 import com.github.stellarwitch7.earthguard.material.armour.BonemailArmourMaterial;
 import com.github.stellarwitch7.earthguard.material.armour.SteelArmourMaterial;
 import com.github.stellarwitch7.earthguard.material.tool.AvrilliumToolMaterial;
+import com.github.stellarwitch7.earthguard.material.tool.CursedToolMaterial;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.data.client.Models;
 import net.minecraft.entity.EquipmentSlot;
@@ -155,6 +157,11 @@ public class ModItems {
 							.group(EarthguardMod.ITEM_GROUP)
 							.maxCount(64)));
 	//Create weapon items here
+	public static final CursedSwordItem CURSED_SWORD = (CursedSwordItem)
+			ModRegistry.createItem("Cursed Sword", Models.GENERATED, false,
+					new CursedSwordItem(new CursedToolMaterial(), 7, -2.9f,
+							new FabricItemSettings()
+									.group(EarthguardMod.ITEM_GROUP)));
 	public static final SwordItem AVRILLIUM_SWORD = (SwordItem)
 			ModRegistry.createItem("Avrillium Sword", Models.GENERATED, false,
 					new SwordItem(new AvrilliumToolMaterial(), 8, -2.9f,
