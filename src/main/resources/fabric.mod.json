@@ -18,16 +18,16 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "software.stellarwitch7.earthguard.EarthguardMod"
+      "com.github.stellarwitch7.earthguard.EarthguardMod"
     ],
     "client": [
-      "software.stellarwitch7.earthguard.EarthguardClient"
+      "com.github.stellarwitch7.earthguard.EarthguardClient"
     ],
     "server": [
-      "software.stellarwitch7.earthguard.EarthguardServer"
+      "com.github.stellarwitch7.earthguard.EarthguardServer"
     ],
     "fabric-datagen": [
-      "software.stellarwitch7.earthguard.EarthguardDataGenerator"
+      "com.github.stellarwitch7.earthguard.EarthguardDataGenerator"
     ]
   },
   "mixins": [
