@@ -1,37 +1,37 @@
 {
   "schemaVersion": 1,
-  "id": "example",
+  "id": "earthguard",
   "version": "${version}",
 
-  "name": "Example",
-  "description": "A template for my Fabric mods.",
+  "name": "Earthguard",
+  "description": "A Fabric mod that adds earthy items and creatures.",
   "authors": [
     "StellarWitch7"
   ],
   "contact": {
-    "sources": "https://github.com/StellarWitch7/Fabristar-Template"
+    "sources": "https://github.com/StellarWitch7/Earthguard"
   },
 
   "license": "ARR",
-  "icon": "assets/example/icon.png",
+  "icon": "assets/earthguard/icon.png",
 
   "environment": "*",
   "entrypoints": {
     "main": [
-      "software.stellarwitch7.example.ExampleMod"
+      "software.stellarwitch7.earthguard.EarthguardMod"
     ],
     "client": [
-      "software.stellarwitch7.example.ExampleClient"
+      "software.stellarwitch7.earthguard.EarthguardClient"
     ],
     "server": [
-      "software.stellarwitch7.example.ExampleServer"
+      "software.stellarwitch7.earthguard.EarthguardServer"
     ],
     "fabric-datagen": [
-      "software.stellarwitch7.example.ExampleDataGenerator"
+      "software.stellarwitch7.earthguard.EarthguardDataGenerator"
     ]
   },
   "mixins": [
-    "example.mixins.json"
+    "earthguard.mixins.json"
   ],
 
   "depends": {
