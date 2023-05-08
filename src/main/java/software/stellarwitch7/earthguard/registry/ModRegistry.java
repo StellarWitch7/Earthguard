@@ -1,5 +1,6 @@
 package software.stellarwitch7.earthguard.registry;
 
+import org.apache.commons.lang3.StringUtils;
 import software.stellarwitch7.earthguard.EarthguardMod;
 import software.stellarwitch7.earthguard.registry.registrable.RegistrableBlock;
 import software.stellarwitch7.earthguard.registry.registrable.RegistrableItem;
@@ -45,7 +46,9 @@ public class ModRegistry {
 		loadRegistry();
 		
 		//Register blocks
-		EarthguardMod.LOGGER.info("Registering " + EarthguardMod.MOD_ID + " blocks");
+		EarthguardMod.LOGGER.info("Registering "
+				+ StringUtils.capitalize(EarthguardMod.MOD_ID)
+				+ " blocks");
 		for (RegistrableBlock data : registryBlocks) {
 			EarthguardMod.LOGGER.info("Registering block <"
 					+ EarthguardMod.MOD_ID + ":"
@@ -56,7 +59,9 @@ public class ModRegistry {
 		}
 		
 		//Register status effects
-		EarthguardMod.LOGGER.info("Registering " + EarthguardMod.MOD_ID + " status effects");
+		EarthguardMod.LOGGER.info("Registering "
+				+ StringUtils.capitalize(EarthguardMod.MOD_ID)
+				+ " status effects");
 		for (RegistrableStatusEffect data : registryEffects) {
 			EarthguardMod.LOGGER.info("Registering effect <"
 					+ EarthguardMod.MOD_ID + ":"
@@ -67,7 +72,9 @@ public class ModRegistry {
 		}
 		
 		//Register items
-		EarthguardMod.LOGGER.info("Registering " + EarthguardMod.MOD_ID + " items");
+		EarthguardMod.LOGGER.info("Registering "
+				+ StringUtils.capitalize(EarthguardMod.MOD_ID)
+				+ " items");
 		for (RegistrableItem data : registryItems) {
 			EarthguardMod.LOGGER.info("Registering item <"
 					+ EarthguardMod.MOD_ID + ":"

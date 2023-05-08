@@ -23,7 +23,7 @@ public class EarthguardMod implements ModInitializer {
 	
 	@Override
 	public void onInitialize() {
-		LOGGER.info("Earthguard loaded");
+		LOGGER.info(StringUtils.capitalize(MOD_ID) + " loaded");
 		ModConfiguredFeatures.register();
 		ModRegistry.register();
 		ModOreGeneration.generate();
