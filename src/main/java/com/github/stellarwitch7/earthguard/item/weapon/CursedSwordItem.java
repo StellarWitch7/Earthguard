@@ -19,6 +19,14 @@ public class CursedSwordItem extends ModSwordItem {
 			StatusEffects.MINING_FATIGUE,
 			StatusEffects.POISON,
 			StatusEffects.WITHER);
+	private final List<StatusEffect> undeadAfflictions = List.of(StatusEffects.BLINDNESS,
+			StatusEffects.GLOWING,
+			StatusEffects.NAUSEA,
+			StatusEffects.WEAKNESS,
+			StatusEffects.SLOWNESS,
+			StatusEffects.MINING_FATIGUE,
+			StatusEffects.REGENERATION,
+			StatusEffects.WITHER);
 	
 	public CursedSwordItem(ToolMaterial toolMaterial, int attackDamage,
 						   float attackSpeed, Settings settings) {
@@ -27,9 +35,18 @@ public class CursedSwordItem extends ModSwordItem {
 	
 	@Override
 	public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-		double doubleRandomNumber = Math.random() * afflictions.size();
-		int randomNumber = (int)doubleRandomNumber;
-		target.addStatusEffect(new StatusEffectInstance(afflictions.get(randomNumber), 120, 1));
+		if (target.isUndead()) {
+			double doubleRandomNumber = Math.random() * undeadAfflictions.size();
+			int randomNumber = (int)doubleRandomNumber;
+			target.addStatusEffect(new StatusEffectInstance(undeadAfflictions.get(randomNumber),
+					120, 1));
+		} else {
+			double doubleRandomNumber = Math.random() * afflictions.size();
+			int randomNumber = (int)doubleRandomNumber;
+			target.addStatusEffect(new StatusEffectInstance(afflictions.get(randomNumber),
+					120, 1));
+		}
+		
 		stack.damage(1, attacker, e -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
 		return true;
 	}
