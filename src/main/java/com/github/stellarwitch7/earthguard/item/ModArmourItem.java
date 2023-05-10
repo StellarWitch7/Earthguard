@@ -1,4 +1,4 @@
-package com.github.stellarwitch7.earthguard.item.armour;
+package com.github.stellarwitch7.earthguard.item;
 
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ArmorItem;

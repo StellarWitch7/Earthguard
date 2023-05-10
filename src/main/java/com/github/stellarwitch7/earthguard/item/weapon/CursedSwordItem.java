@@ -1,5 +1,6 @@
 package com.github.stellarwitch7.earthguard.item.weapon;
 
+import com.github.stellarwitch7.earthguard.item.ModSwordItem;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;

@@ -1,4 +1,4 @@
-package com.github.stellarwitch7.earthguard.item.weapon;
+package com.github.stellarwitch7.earthguard.item;
 
 import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
