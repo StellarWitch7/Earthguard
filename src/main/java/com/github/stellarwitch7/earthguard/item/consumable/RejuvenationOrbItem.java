@@ -17,9 +17,11 @@ public class RejuvenationOrbItem extends ModItem {
 	
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity playerEntity, Hand hand) {
+		StatusEffectInstance current = playerEntity.getStatusEffect(StatusEffects.REGENERATION);
+		int newAmplifier = current != null ? current.getAmplifier() + 4 : 4;
 		playerEntity.getStackInHand(hand).decrement(1);
 		playerEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION,
-				80, 5));
+				70, newAmplifier));
 		playerEntity.playSound(SoundEvents.BLOCK_GLASS_BREAK, 1.0f, 1.0f);
 		return TypedActionResult.success(playerEntity.getStackInHand(hand));
 	}
