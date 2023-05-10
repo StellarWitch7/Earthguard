@@ -1,8 +1,8 @@
 package com.github.stellarwitch7.earthguard.item.simple;
 
-import net.minecraft.item.Item;
+import com.github.stellarwitch7.earthguard.item.ModItem;
 
-public class ActiveErrodiumItem extends Item {
+public class ActiveErrodiumItem extends ModItem {
 	public ActiveErrodiumItem(Settings settings) {
 		super(settings);
 	}

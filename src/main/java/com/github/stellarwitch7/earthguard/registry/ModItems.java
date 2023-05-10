@@ -1,5 +1,6 @@
 package com.github.stellarwitch7.earthguard.registry;
 
+import com.github.stellarwitch7.earthguard.item.consumable.RejuvenationOrbItem;
 import com.github.stellarwitch7.earthguard.item.weapon.CursedSwordItem;
 import com.github.stellarwitch7.earthguard.item.weapon.EarthCannonItem;
 import com.github.stellarwitch7.earthguard.EarthguardMod;
@@ -99,11 +100,17 @@ public class ModItems {
 							.group(EarthguardMod.ITEM_GROUP)
 							.maxCount(8)
 							.fireproof()));
-	public static final Item ACTIVE_ERRODIUM =
+	public static final ActiveErrodiumItem ACTIVE_ERRODIUM = (ActiveErrodiumItem)
 			ModRegistry.createItem("Active Errodium", Models.GENERATED, false,
 					new ActiveErrodiumItem(new FabricItemSettings()
 							.group(EarthguardMod.ITEM_GROUP)
 							.maxCount(64)
+							.fireproof()));
+	public static final RejuvenationOrbItem REJUVENATION_ORB = (RejuvenationOrbItem)
+			ModRegistry.createItem("Orb of Rejuvenation", Models.GENERATED, false,
+					new RejuvenationOrbItem(new FabricItemSettings()
+							.group(EarthguardMod.ITEM_GROUP)
+							.maxCount(16)
 							.fireproof()));
 	//Create block items here
 	//Note: the name used here is the only one that is shown in-game

@@ -1,5 +1,6 @@
 package com.github.stellarwitch7.earthguard.item.consumable;
 
+import com.github.stellarwitch7.earthguard.item.ModItem;
 import com.github.stellarwitch7.earthguard.registry.ModEffects;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -11,7 +12,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
-public class ChargedSoulGemItem extends Item {
+public class ChargedSoulGemItem extends ModItem {
 	public ChargedSoulGemItem(Settings settings) {
 		super(settings);
 	}
@@ -20,8 +21,10 @@ public class ChargedSoulGemItem extends Item {
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity playerEntity, Hand hand) {
 		if (!playerEntity.getActiveStatusEffects().containsKey(ModEffects.PEACEKEEPER)) {
 			playerEntity.getStackInHand(hand).decrement(1);
-			playerEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 1000));
-			playerEntity.addStatusEffect(new StatusEffectInstance(ModEffects.PEACEKEEPER, 2000));
+			playerEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE,
+					1000));
+			playerEntity.addStatusEffect(new StatusEffectInstance(ModEffects.PEACEKEEPER,
+					2000));
 			playerEntity.playSound(SoundEvents.BLOCK_END_PORTAL_SPAWN, 1.0f, 1.0f);
 			return TypedActionResult.success(playerEntity.getStackInHand(hand));
 		} else {
