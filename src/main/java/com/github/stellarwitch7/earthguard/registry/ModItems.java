@@ -88,6 +88,11 @@ public class ModItems {
 					new Item(new FabricItemSettings()
 							.group(EarthguardMod.ITEM_GROUP)
 							.maxCount(64)));
+	public static final Item ERRODIUM_VIAL =
+			ModRegistry.createItem("Errodium Vial", Models.GENERATED, false,
+					new Item(new FabricItemSettings()
+							.group(EarthguardMod.ITEM_GROUP)
+							.maxCount(80)));
 	//Create custom items here
 	public static final EnchantedFertilizerItem ENCHANTED_FERTILIZER = (EnchantedFertilizerItem)
 			ModRegistry.createItem("Enchanted Fertilizer", Models.GENERATED, false,
@@ -175,7 +180,7 @@ public class ModItems {
 							new FabricItemSettings()
 									.group(EarthguardMod.ITEM_GROUP)
 									.fireproof()));
-	public static final RangedWeaponItem EARTH_CANNON = (RangedWeaponItem)
+	public static final EarthCannonItem EARTH_CANNON = (EarthCannonItem)
 			ModRegistry.createItem("Earth Cannon", Models.GENERATED, false,
 					new EarthCannonItem(new FabricItemSettings()
 							.group(EarthguardMod.ITEM_GROUP)));
@@ -259,7 +264,6 @@ public class ModItems {
 							new FabricItemSettings()
 									.group(EarthguardMod.ITEM_GROUP)
 									.fireproof()));
-	
 	//Call this to load the items
 	public static void load() {}
 }
