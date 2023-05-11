@@ -1,6 +1,6 @@
 package com.github.stellarwitch7.earthguard.mixin;
 
-import com.github.stellarwitch7.earthguard.registry.ModItems;
+import com.github.stellarwitch7.earthguard.util.IExplosiveItem;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.damage.DamageSource;
 import org.spongepowered.asm.mixin.Debug;
@@ -17,8 +17,8 @@ public abstract class ItemEntityMixin {
 			at = @At("HEAD"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
 	private void damage(DamageSource source, float amount,
 						CallbackInfoReturnable<Boolean> info) {
-		//Allows active errodium to be immune to explosives
-		if (((ItemEntity)(Object)this).getStack().isOf(ModItems.ACTIVE_ERRODIUM)
+		//Allows items implementing IExplosiveItem to be explosion immune
+		if (((ItemEntity)(Object)this).getStack().getItem() instanceof IExplosiveItem
 				&& source.isExplosive()) {
 			info.setReturnValue(false);
 		}

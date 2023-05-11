@@ -5,19 +5,13 @@ import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 
 public interface IExplosiveItem {
-//	For the item to actually explode, you will need to
-//	write the following method into the item's class.
-//	Don't worry, the interface will require that you implement this method.
-//	This will cause it to explode when the item is destroyed.
-//	For other triggers, simply call explode() from another location.
-
-//	@Override
-//	public void onItemEntityDestroyed(ItemEntity entity) {
-//		IExplosiveItem.super.explode(entity);
-//	}
-	
 	float getExplosiveStrength();
 	Explosion.DestructionType getDestructionType();
+	/**
+	 *This method overrides a method from the Minecraft Item class.
+	 * To make the item explode when it is destroyed, call IExplosiveItem.super.explode(entity)
+	 * @param entity
+	 */
 	void onItemEntityDestroyed(ItemEntity entity);
 	default void explode(ItemEntity entity) {
 		World world = entity.getWorld();
