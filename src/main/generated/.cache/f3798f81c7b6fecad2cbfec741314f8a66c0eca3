@@ -1,4 +1,4 @@
-// 1.19.2	2023-05-10T13:53:38.4281312	Models
+// 1.19.2	2023-05-10T23:51:11.6454093	Models
 c15069eaac3dcc5ebf199b5c161267c4b0c88974 assets\earthguard\models\item\cursed_sword.json
 d08a3b964b51348aedcff4058d36fee0b46c94cb assets\earthguard\models\item\avrillium_ore.json
 3727a4b263a5af206dbfbbb08f2610d072cd2991 assets\earthguard\models\block\limestone_block.json
@@ -29,6 +29,7 @@ b022b07ac4d563bd187ff376489b8001cf2851d1 assets\earthguard\models\item\steel_leg
 72adfb38fcd692f004c6d16a133a56f11a4c5884 assets\earthguard\models\item\avrillium_sword.json
 d7e4954095d38f68f5eeb1ddb470a26777bf31d4 assets\earthguard\models\item\steel_helmet.json
 db7db94a3ecfa152f2d5b193eb4a49ab6d9cae19 assets\earthguard\models\item\avrillium_axe.json
+e5c414f2d9fb211eeab5eda371559f4b4468b79d assets\earthguard\models\item\errodium_vial.json
 a097db2298b11287672a2af99f9be10f9ab5d8fb assets\earthguard\models\item\bone_fragment.json
 dc76eebb1162cc4ac0e1b3bf01737ca815f72046 assets\earthguard\models\item\avrillium_ingot.json
 a77f3555ebed2a37b07c878f2d5395e8cdaf30be assets\earthguard\models\item\steel_ingot.json

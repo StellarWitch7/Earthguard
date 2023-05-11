@@ -10,7 +10,6 @@ public class ActiveErrodiumItem extends ModItem {
 		super(settings);
 	}
 	
-	//Alpha, may not work
 	@Override
 	public void onItemEntityDestroyed(ItemEntity entity) {
 		World world = entity.getWorld();
@@ -18,6 +17,6 @@ public class ActiveErrodiumItem extends ModItem {
 				entity.getX(),
 				entity.getY(),
 				entity.getZ(),
-				5, Explosion.DestructionType.NONE);
+				20, Explosion.DestructionType.DESTROY);
 	}
 }

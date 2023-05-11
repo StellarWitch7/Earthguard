@@ -173,96 +173,114 @@ public class ModItems {
 			ModRegistry.createItem("Cursed Sword", Models.GENERATED, false,
 					new CursedSwordItem(new CursedToolMaterial(), 7, -2.9f,
 							new FabricItemSettings()
-									.group(EarthguardMod.ITEM_GROUP)));
+									.group(EarthguardMod.ITEM_GROUP)
+									.maxCount(1)));
 	public static final SwordItem AVRILLIUM_SWORD = (SwordItem)
 			ModRegistry.createItem("Avrillium Sword", Models.GENERATED, false,
 					new SwordItem(new AvrilliumToolMaterial(), 8, -2.9f,
 							new FabricItemSettings()
 									.group(EarthguardMod.ITEM_GROUP)
+									.maxCount(1)
 									.fireproof()));
 	public static final EarthCannonItem EARTH_CANNON = (EarthCannonItem)
 			ModRegistry.createItem("Earth Cannon", Models.GENERATED, false,
 					new EarthCannonItem(new FabricItemSettings()
-							.group(EarthguardMod.ITEM_GROUP)));
+							.group(EarthguardMod.ITEM_GROUP)
+							.maxCount(1)));
 	//Create armour items here
 	public static final ArmorItem BONEMAIL_HELMET = (ArmorItem)
 			ModRegistry.createItem("Bonemail Helmet", Models.GENERATED, false,
 					new BonemailArmourItem(new BonemailArmourMaterial(),
 							EquipmentSlot.HEAD, new FabricItemSettings()
-							.group(EarthguardMod.ITEM_GROUP)));
+							.group(EarthguardMod.ITEM_GROUP)
+							.maxCount(1)));
 	public static final ArmorItem BONEMAIL_CHESTPLATE = (ArmorItem)
 			ModRegistry.createItem("Bonemail Chestplate", Models.GENERATED, false,
 					new BonemailArmourItem(new BonemailArmourMaterial(),
 							EquipmentSlot.CHEST, new FabricItemSettings()
-							.group(EarthguardMod.ITEM_GROUP)));
+							.group(EarthguardMod.ITEM_GROUP)
+							.maxCount(1)));
 	public static final ArmorItem BONEMAIL_LEGGINGS = (ArmorItem)
 			ModRegistry.createItem("Bonemail Leggings", Models.GENERATED, false,
 					new BonemailArmourItem(new BonemailArmourMaterial(),
 							EquipmentSlot.LEGS, new FabricItemSettings()
-							.group(EarthguardMod.ITEM_GROUP)));
+							.group(EarthguardMod.ITEM_GROUP)
+							.maxCount(1)));
 	public static final ArmorItem BONEMAIL_BOOTS = (ArmorItem)
 			ModRegistry.createItem("Bonemail Boots", Models.GENERATED, false,
 					new BonemailArmourItem(new BonemailArmourMaterial(),
 							EquipmentSlot.FEET, new FabricItemSettings()
-							.group(EarthguardMod.ITEM_GROUP)));
+							.group(EarthguardMod.ITEM_GROUP)
+							.maxCount(1)));
 	public static final ArmorItem AVRILLIUM_HELMET = (ArmorItem)
 			ModRegistry.createItem("Avrillium Helmet", Models.GENERATED, false,
 					new AvrilliumArmourItem(new AvrilliumArmourMaterial(),
 							EquipmentSlot.HEAD, new FabricItemSettings()
-							.group(EarthguardMod.ITEM_GROUP)));
+							.group(EarthguardMod.ITEM_GROUP)
+							.maxCount(1)));
 	public static final ArmorItem AVRILLIUM_CHESTPLATE = (ArmorItem)
 			ModRegistry.createItem("Avrillium Chestplate", Models.GENERATED, false,
 					new AvrilliumArmourItem(new AvrilliumArmourMaterial(),
 							EquipmentSlot.CHEST, new FabricItemSettings()
-							.group(EarthguardMod.ITEM_GROUP)));
+							.group(EarthguardMod.ITEM_GROUP)
+							.maxCount(1)));
 	public static final ArmorItem AVRILLIUM_LEGGINGS = (ArmorItem)
 			ModRegistry.createItem("Avrillium Leggings", Models.GENERATED, false,
 					new AvrilliumArmourItem(new AvrilliumArmourMaterial(),
 							EquipmentSlot.LEGS, new FabricItemSettings()
-							.group(EarthguardMod.ITEM_GROUP)));
+							.group(EarthguardMod.ITEM_GROUP)
+							.maxCount(1)));
 	public static final ArmorItem AVRILLIUM_BOOTS = (ArmorItem)
 			ModRegistry.createItem("Avrillium Boots", Models.GENERATED, false,
 					new AvrilliumArmourItem(new AvrilliumArmourMaterial(),
 							EquipmentSlot.FEET, new FabricItemSettings()
-							.group(EarthguardMod.ITEM_GROUP)));
+							.group(EarthguardMod.ITEM_GROUP)
+							.maxCount(1)));
 	public static final ArmorItem STEEL_HELMET = (ArmorItem)
 			ModRegistry.createItem("Steel Helmet", Models.GENERATED, false,
 					new SteelArmourItem(new SteelArmourMaterial(),
 							EquipmentSlot.HEAD, new FabricItemSettings()
-							.group(EarthguardMod.ITEM_GROUP)));
+							.group(EarthguardMod.ITEM_GROUP)
+							.maxCount(1)));
 	public static final ArmorItem STEEL_CHESTPLATE = (ArmorItem)
 			ModRegistry.createItem("Steel Chestplate", Models.GENERATED, false,
 					new SteelArmourItem(new SteelArmourMaterial(),
 							EquipmentSlot.CHEST, new FabricItemSettings()
-							.group(EarthguardMod.ITEM_GROUP)));
+							.group(EarthguardMod.ITEM_GROUP)
+							.maxCount(1)));
 	public static final ArmorItem STEEL_LEGGINGS = (ArmorItem)
 			ModRegistry.createItem("Steel Leggings", Models.GENERATED, false,
 					new SteelArmourItem(new SteelArmourMaterial(),
 							EquipmentSlot.LEGS, new FabricItemSettings()
-							.group(EarthguardMod.ITEM_GROUP)));
+							.group(EarthguardMod.ITEM_GROUP)
+							.maxCount(1)));
 	public static final ArmorItem STEEL_BOOTS = (ArmorItem)
 			ModRegistry.createItem("Steel Boots", Models.GENERATED, false,
 					new SteelArmourItem(new SteelArmourMaterial(),
 							EquipmentSlot.FEET, new FabricItemSettings()
-							.group(EarthguardMod.ITEM_GROUP)));
+							.group(EarthguardMod.ITEM_GROUP)
+							.maxCount(1)));
 	//Create tool items here
 	public static final PickaxeItem AVRILLIUM_PICKAXE = (PickaxeItem)
 			ModRegistry.createItem("Avrillium Pickaxe", Models.GENERATED, false,
 					new PickaxeItem(new AvrilliumToolMaterial(), 4, -2.8f,
 							new FabricItemSettings()
 									.group(EarthguardMod.ITEM_GROUP)
+									.maxCount(1)
 									.fireproof()));
 	public static final AxeItem AVRILLIUM_AXE = (AxeItem)
 			ModRegistry.createItem("Avrillium Axe", Models.GENERATED, false,
 					new AxeItem(new AvrilliumToolMaterial(), 9, -3.1f,
 							new FabricItemSettings()
 									.group(EarthguardMod.ITEM_GROUP)
+									.maxCount(1)
 									.fireproof()));
 	public static final ShovelItem AVRILLIUM_SHOVEL = (ShovelItem)
 			ModRegistry.createItem("Avrillium Shovel", Models.GENERATED, false,
 					new ShovelItem(new AvrilliumToolMaterial(), 4, -3.0f,
 							new FabricItemSettings()
 									.group(EarthguardMod.ITEM_GROUP)
+									.maxCount(1)
 									.fireproof()));
 	//Call this to load the items
 	public static void load() {}
