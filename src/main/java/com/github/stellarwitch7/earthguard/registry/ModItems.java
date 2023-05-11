@@ -109,8 +109,7 @@ public class ModItems {
 			ModRegistry.createItem("Active Errodium", Models.GENERATED, false,
 					new ActiveErrodiumItem(new FabricItemSettings()
 							.group(EarthguardMod.ITEM_GROUP)
-							.maxCount(64)
-							.fireproof()));
+							.maxCount(64)));
 	public static final RejuvenationOrbItem REJUVENATION_ORB = (RejuvenationOrbItem)
 			ModRegistry.createItem("Orb of Rejuvenation", Models.GENERATED, false,
 					new RejuvenationOrbItem(new FabricItemSettings()

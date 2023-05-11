@@ -17,6 +17,6 @@ public class ActiveErrodiumItem extends ModItem {
 				entity.getX(),
 				entity.getY(),
 				entity.getZ(),
-				20, Explosion.DestructionType.DESTROY);
+				20, Explosion.DestructionType.BREAK);
 	}
 }

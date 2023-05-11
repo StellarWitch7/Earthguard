@@ -1,9 +1,7 @@
 package com.github.stellarwitch7.earthguard.item.weapon;
 
 import com.github.stellarwitch7.earthguard.item.ModSwordItem;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ItemEntity;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -50,7 +48,7 @@ public class CursedSwordItem extends ModSwordItem {
 					120, 1));
 		}
 		
-		//stack.damage(1, attacker, e -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
+		stack.damage(1, attacker, e -> e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND));
 		return true;
 	}
 	
@@ -58,6 +56,6 @@ public class CursedSwordItem extends ModSwordItem {
 	@Override
 	public void onItemEntityDestroyed(ItemEntity entity) {
 		World world = entity.getWorld();
-		world.spawnEntity(EntityType.EVOKER_FANGS.create(world));
+		world.spawnEntity(new LightningEntity(EntityType.LIGHTNING_BOLT, world));
 	}
 }
