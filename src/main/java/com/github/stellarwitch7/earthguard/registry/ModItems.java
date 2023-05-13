@@ -1,5 +1,6 @@
 package com.github.stellarwitch7.earthguard.registry;
 
+import com.github.stellarwitch7.earthguard.item.consumable.CatnipItem;
 import com.github.stellarwitch7.earthguard.item.consumable.RejuvenationOrbItem;
 import com.github.stellarwitch7.earthguard.item.weapon.CursedSwordItem;
 import com.github.stellarwitch7.earthguard.item.weapon.EarthCannonItem;
@@ -116,6 +117,11 @@ public class ModItems {
 							.group(EarthguardMod.ITEM_GROUP)
 							.maxCount(16)
 							.fireproof()));
+	public static final CatnipItem CATNIP = (CatnipItem)
+			ModRegistry.createItem("Catnip", Models.GENERATED, false,
+					new CatnipItem(new FabricItemSettings()
+							.group(EarthguardMod.ITEM_GROUP)
+							.maxCount(64)));
 	//Create block items here
 	//Note: the name used here is the only one that is shown in-game
 	//It MUST match the exact name that is in the ModBlocks entry
