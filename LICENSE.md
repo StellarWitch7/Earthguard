@@ -1,1 +1,3 @@
-All Rights Reserved
+# All Rights Reserved
+
+You may use this mod in any modpacks as long as you link back to this page, my [Modrinth](https://modrinth.com/mod/earthguard) page, or my [CurseForge](https://www.curseforge.com/minecraft/mc-mods/earthguard) page, and credit me, StellarWitch7, as the author. You may not profit from modpacks containing my mod in any way. 
