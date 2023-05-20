@@ -1,7 +1,7 @@
 package com.github.stellarwitch7.earthguard.item.consumable;
 
-import com.github.stellarwitch7.earthguard.item.ModItem;
 import com.github.stellarwitch7.earthguard.registry.ModEffects;
+import com.github.stellarwitch7.earthguard.item.ModItem;
 import com.github.stellarwitch7.earthguard.util.IConsumableItem;
 import com.github.stellarwitch7.earthguard.util.IPlayerEntityAccessor;
 import net.minecraft.entity.effect.StatusEffectInstance;

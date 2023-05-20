@@ -1,9 +1,9 @@
 package com.github.stellarwitch7.earthguard.registry;
 
+import com.github.stellarwitch7.earthguard.item.weapon.EarthCannonItem;
 import com.github.stellarwitch7.earthguard.item.consumable.CatnipItem;
 import com.github.stellarwitch7.earthguard.item.consumable.RejuvenationOrbItem;
 import com.github.stellarwitch7.earthguard.item.weapon.CursedSwordItem;
-import com.github.stellarwitch7.earthguard.item.weapon.EarthCannonItem;
 import com.github.stellarwitch7.earthguard.EarthguardMod;
 import com.github.stellarwitch7.earthguard.item.armour.AvrilliumArmourItem;
 import com.github.stellarwitch7.earthguard.item.armour.BonemailArmourItem;

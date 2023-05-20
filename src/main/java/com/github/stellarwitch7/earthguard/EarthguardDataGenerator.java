@@ -1,10 +1,10 @@
 package com.github.stellarwitch7.earthguard;
 
+import com.github.stellarwitch7.earthguard.registry.ModRegistry;
 import com.github.stellarwitch7.earthguard.datagen.ModLanguageGenerator;
 import com.github.stellarwitch7.earthguard.datagen.ModLootGenerator;
 import com.github.stellarwitch7.earthguard.datagen.ModModelGenerator;
 import com.github.stellarwitch7.earthguard.datagen.ModRecipeGenerator;
-import com.github.stellarwitch7.earthguard.registry.ModRegistry;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 

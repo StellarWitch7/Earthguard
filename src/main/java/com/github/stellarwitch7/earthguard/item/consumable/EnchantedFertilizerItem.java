@@ -1,8 +1,8 @@
 package com.github.stellarwitch7.earthguard.item.consumable;
 
-import com.github.stellarwitch7.earthguard.item.ModItem;
 import com.github.stellarwitch7.earthguard.registry.ModEffects;
 import com.github.stellarwitch7.earthguard.util.IConsumableItem;
+import com.github.stellarwitch7.earthguard.item.ModItem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;

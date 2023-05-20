@@ -1,12 +1,11 @@
 package com.github.stellarwitch7.earthguard.item.consumable;
 
-import com.github.stellarwitch7.earthguard.item.ModItem;
 import com.github.stellarwitch7.earthguard.registry.ModEffects;
 import com.github.stellarwitch7.earthguard.util.IConsumableItem;
+import com.github.stellarwitch7.earthguard.item.ModItem;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Hand;

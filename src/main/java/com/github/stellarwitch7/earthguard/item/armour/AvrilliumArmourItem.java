@@ -1,7 +1,7 @@
 package com.github.stellarwitch7.earthguard.item.armour;
 
-import com.github.stellarwitch7.earthguard.item.ModArmourItem;
 import com.github.stellarwitch7.earthguard.registry.ModItems;
+import com.github.stellarwitch7.earthguard.item.ModArmourItem;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.decoration.ArmorStandEntity;
