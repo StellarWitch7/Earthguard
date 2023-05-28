@@ -1,3 +1,7 @@
+# Earthguard
+
+[Home Page](https://stellarwitch7.github.io/)
+
 # What is Earthguard?
 Earthguard seeks to add a blend of sci-fi and magic. It provides new items, blocks, and creatures, from nuclear reactors to cabbage warriors. I hope to also eventually add one or two bosses. 
 
