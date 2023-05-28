@@ -1,6 +1,6 @@
 # Earthguard
 
-[Home Page](https://stellarwitch7.github.io/)
+[Home Page](https://stellarwitch7.github.io)
 
 ## What is Earthguard?
 Earthguard seeks to add a blend of sci-fi and magic. It provides new items, blocks, and creatures, from nuclear reactors to cabbage warriors. I hope to also eventually add one or two bosses. 
@@ -24,3 +24,9 @@ You may use this mod in any modpacks as long as you link back to this page, my [
 
 ### Feedback
 Feedback is appreciated, you may report bugs and provide suggestions through the repository's [Issues](https://github.com/StellarWitch7/Earthguard/issues) page. 
+
+### Important Links
+- [Website](https://stellarwitch7.github.io/earthguard)
+- [GitHub](https://github.com/StellarWitch7/Earthguard)
+- [Modrinth](https://modrinth.com/mod/earthguard)
+- [CurseForge](https://www.curseforge.com/minecraft/mc-mods/earthguard)
