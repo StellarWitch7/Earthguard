@@ -21,3 +21,6 @@ You may download Earthguard from the repository's [Releases](https://github.com/
 
 ### Modpacks
 You may use this mod in any modpacks as long as you link back to this page, my [Modrinth](https://modrinth.com/mod/earthguard) page, or my [CurseForge](https://www.curseforge.com/minecraft/mc-mods/earthguard) page, and credit me, StellarWitch7, as the author. You may not profit from modpacks containing my mod in any way. 
+
+### Feedback
+Feedback is appreciated, you may report bugs and provide suggestions through the repository's [Issues](https://github.com/StellarWitch7/Earthguard/issues) page. 
