@@ -1,4 +1,4 @@
-name: Update profile website
+name: Update Profile Website
 on:
   workflow_dispatch:
   push:
