@@ -1,4 +1,4 @@
-name: Generate HTML
+name: Update profile website
 on:
   workflow_dispatch:
   push:
