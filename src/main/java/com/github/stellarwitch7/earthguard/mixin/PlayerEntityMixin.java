@@ -11,9 +11,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.world.World;
-import org.spongepowered.asm.mixin.Debug;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -21,20 +19,27 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Debug(export = true)
 @Mixin(PlayerEntity.class)
-public abstract class PlayerEntityMixin extends LivingEntity implements IPlayerEntityAccessor {
-	private boolean hasReadNbt = false;
+public abstract class PlayerEntityMixin
+		extends LivingEntity
+		implements IPlayerEntityAccessor {
+	@Unique
 	private boolean isLycan = false;
+	@Unique
 	private float blockedDamage = 0;
+	@Unique
 	private int ticksBetweenDrains = 900;
+	@Unique
 	private int ticksPassedSinceLastDrain = 0;
 	
-	protected PlayerEntityMixin(EntityType<? extends LivingEntity> entityType, World world) {
+	protected PlayerEntityMixin(EntityType<? extends LivingEntity> entityType,
+								World world) {
 		super(entityType, world);
 	}
 	
 	@Inject(method = "applyDamage",
 			at = @At("HEAD"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
-	private void applyDamage(DamageSource source, float amount, CallbackInfo info) {
+	private void earthguard$blockDamage(DamageSource source, float amount,
+										CallbackInfo info) {
 		if (((PlayerEntity)(Object)this).hasStatusEffect(ModEffects.FURGUARD)) {
 			if (!source.bypassesArmor() && !source.isFire()
 					&& !source.isFromFalling() && !source.isMagic()) {
@@ -47,7 +52,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IPlayerE
 	}
 	
 	@Inject(method = "tick", at = @At("HEAD"))
-	private void tick(CallbackInfo info) {
+	private void earthguard$applyBlockedDamage(CallbackInfo info) {
 		if (((PlayerEntity)(Object)this).isAlive()) {
 			if (((PlayerEntity)(Object)this).hasStatusEffect(ModEffects.FURGUARD)) {
 				ticksPassedSinceLastDrain += (blockedDamage + 2) / 2;
@@ -69,29 +74,31 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IPlayerE
 	
 	@Inject(method = "readCustomDataFromNbt", at = @At("TAIL"),
 			locals = LocalCapture.CAPTURE_FAILHARD)
-	private void readCustomDataFromNbt(NbtCompound nbt, CallbackInfo info) {
+	private void earthguard$readCustomDataFromNbt(NbtCompound nbt,
+												  CallbackInfo info) {
 		isLycan = nbt.getBoolean("isLycan");
 		EarthguardMod.LOGGER.info("Reading NBT: isLycan = " + isLycan); //Debug
 	}
 	
 	@Inject(method = "writeCustomDataToNbt", at = @At("TAIL"),
 			locals = LocalCapture.CAPTURE_FAILHARD)
-	private void writeCustomDataToNbt(NbtCompound nbt, CallbackInfo info) {
+	private void earthguard$writeCustomDataToNbt(NbtCompound nbt,
+												 CallbackInfo info) {
 		nbt.putBoolean("isLycan", isLycan);
 		EarthguardMod.LOGGER.info("Writing NBT: isLycan = " + isLycan); //Debug
 	}
 	
 	@Override
-	public void setLycanStatus(boolean isLycan) {
+	public void earthguard$setLycanStatus(boolean isLycan) {
 		this.isLycan = isLycan;
 	}
 	
 	@Override
-	public float getBlockedDamage() {
+	public float earthguard$getBlockedDamage() {
 		return blockedDamage;
 	}
 	@Override
-	public boolean isLycan() {
+	public boolean earthguard$isLycan() {
 		return isLycan;
 	}
 	

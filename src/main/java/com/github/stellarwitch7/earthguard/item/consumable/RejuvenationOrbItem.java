@@ -21,7 +21,7 @@ public class RejuvenationOrbItem extends ModItem implements IConsumableItem {
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity playerEntity, Hand hand) {
 		//FOR DEBUGGING -->
 		if (playerEntity instanceof IPlayerEntityAccessor) {
-			((IPlayerEntityAccessor)playerEntity).setLycanStatus(true);
+			((IPlayerEntityAccessor)playerEntity).earthguard$setLycanStatus(true);
 		}
 		//<--
 		

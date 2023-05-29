@@ -19,7 +19,7 @@ public class CatnipItem extends ModItem implements IConsumableItem {
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity playerEntity, Hand hand) {
 		if (playerEntity instanceof IPlayerEntityAccessor) {
-			if (((IPlayerEntityAccessor)playerEntity).isLycan()) {
+			if (((IPlayerEntityAccessor)playerEntity).earthguard$isLycan()) {
 				playerEntity.addStatusEffect(new StatusEffectInstance(ModEffects.FURGUARD,
 						300, 1));
 				playerEntity.getStackInHand(hand).decrement(1);
