@@ -1,13 +1,18 @@
 package com.github.stellarwitch7.earthguard.registry;
 
+import com.github.stellarwitch7.earthguard.client.entity.WildLycanEntityRenderer;
 import com.github.stellarwitch7.earthguard.client.entity.armour.AvrilliumArmourRenderer;
 import com.github.stellarwitch7.earthguard.client.entity.armour.BonemailArmourRenderer;
 import com.github.stellarwitch7.earthguard.client.entity.armour.SteelArmourRenderer;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import software.bernie.geckolib3.renderers.geo.GeoArmorRenderer;
 
-public class ModRenderers {
+public class ClientRenderers {
 	//Call this to load the renderers
 	public static void load() {
+		//Create new entity renderers here
+		EntityRendererRegistry.register(ModEntities.WILD_LYCAN, WildLycanEntityRenderer::new);
+		
 		//Create new armour renderers here
 		GeoArmorRenderer.registerArmorRenderer(new BonemailArmourRenderer(),
 				ModItems.BONEMAIL_BOOTS,

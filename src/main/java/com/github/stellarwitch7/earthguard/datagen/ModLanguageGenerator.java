@@ -4,6 +4,7 @@ import com.github.stellarwitch7.earthguard.EarthguardDataGenerator;
 import com.github.stellarwitch7.earthguard.EarthguardMod;
 import com.github.stellarwitch7.earthguard.registry.ModRegistry;
 import com.github.stellarwitch7.earthguard.registry.registrable.RegistrableBlock;
+import com.github.stellarwitch7.earthguard.registry.registrable.RegistrableEntity;
 import com.github.stellarwitch7.earthguard.registry.registrable.RegistrableItem;
 import com.github.stellarwitch7.earthguard.registry.registrable.RegistrableStatusEffect;
 import org.apache.commons.lang3.StringUtils;
@@ -38,6 +39,11 @@ class UkEnglishLangProvider extends FabricLanguageProvider {
 			translationBuilder.add(data.effect, data.name);
 		}
 		
+		//Generate entity translations
+		for (RegistrableEntity data : ModRegistry.publicRegistryEntities) {
+			translationBuilder.add(data.entity, data.name);
+		}
+		
 		//Generate item translations
 		for (RegistrableItem data : ModRegistry.publicRegistryItems) {
 			translationBuilder.add(data.item, data.name);
@@ -64,6 +70,11 @@ class UsEnglishLangProvider extends FabricLanguageProvider {
 		//Generate status effect translations
 		for (RegistrableStatusEffect data : ModRegistry.publicRegistryEffects) {
 			translationBuilder.add(data.effect, data.name);
+		}
+		
+		//Generate entity translations
+		for (RegistrableEntity data : ModRegistry.publicRegistryEntities) {
+			translationBuilder.add(data.entity, data.name);
 		}
 		
 		//Generate item translations

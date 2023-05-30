@@ -14,6 +14,6 @@ public class WildLycanEntityRenderer extends GeoEntityRenderer<WildLycanEntity> 
 	@Override
 	public Identifier getTextureLocation(WildLycanEntity instance) {
 		return new Identifier(EarthguardMod.MOD_ID,
-				"textures/entity/wild_lycan/wild_lycan.png");
+				"textures/entity/wild_lycan.png");
 	}
 }

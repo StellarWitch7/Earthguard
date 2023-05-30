@@ -1,5 +1,6 @@
 package com.github.stellarwitch7.earthguard;
 
+import com.github.stellarwitch7.earthguard.registry.ClientRegistry;
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.MinecraftClient;
 
@@ -9,5 +10,6 @@ public class EarthguardClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		EarthguardMod.LOGGER.info("Client initialized");
+		ClientRegistry.register();
 	}
 }
