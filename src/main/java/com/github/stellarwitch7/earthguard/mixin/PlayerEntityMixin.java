@@ -15,7 +15,6 @@ import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Debug(export = true)
 @Mixin(PlayerEntity.class)
@@ -36,8 +35,7 @@ public abstract class PlayerEntityMixin
 		super(entityType, world);
 	}
 	
-	@Inject(method = "applyDamage",
-			at = @At("HEAD"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
+	@Inject(method = "applyDamage", at = @At("HEAD"), cancellable = true)
 	private void earthguard$blockDamage(DamageSource source, float amount,
 										CallbackInfo info) {
 		if (this.hasStatusEffect(ModEffects.FURGUARD)) {
@@ -71,16 +69,14 @@ public abstract class PlayerEntityMixin
 		}
 	}
 	
-	@Inject(method = "readCustomDataFromNbt", at = @At("TAIL"),
-			locals = LocalCapture.CAPTURE_FAILHARD)
+	@Inject(method = "readCustomDataFromNbt", at = @At("HEAD"))
 	private void earthguard$readCustomDataFromNbt(NbtCompound nbt,
 												  CallbackInfo info) {
 		isLycan = nbt.getBoolean("isLycan");
 		EarthguardMod.LOGGER.info("Reading NBT: isLycan = " + isLycan); //Debug
 	}
 	
-	@Inject(method = "writeCustomDataToNbt", at = @At("TAIL"),
-			locals = LocalCapture.CAPTURE_FAILHARD)
+	@Inject(method = "writeCustomDataToNbt", at = @At("HEAD"))
 	private void earthguard$writeCustomDataToNbt(NbtCompound nbt,
 												 CallbackInfo info) {
 		nbt.putBoolean("isLycan", isLycan);

@@ -111,7 +111,7 @@ public class WildLycanEntity extends HostileEntity implements IAnimatable {
 	
 	@Override
 	public ActionResult interactMob(PlayerEntity player, Hand hand) {
-		return null;
+		return super.interactMob(player, hand);
 	}
 	
 	@Override
@@ -123,7 +123,7 @@ public class WildLycanEntity extends HostileEntity implements IAnimatable {
 			if (target instanceof PlayerEntity player) {
 				((IPlayerEntityAccessor)player).earthguard$setLycanStatus(true);
 				player.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS,
-								20));
+								60));
 			} else {
 				var knockback = new Vector3d(this.getPos().x - target.getPos().x,
 						this.getPos().y - target.getPos().y,
