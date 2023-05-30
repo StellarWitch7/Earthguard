@@ -18,6 +18,6 @@ public class SteelArmourModel extends AnimatedGeoModel<SteelArmourItem> {
 	
 	@Override
 	public Identifier getAnimationResource(SteelArmourItem animatable) {
-		return new Identifier(EarthguardMod.MOD_ID, "animations/armour_animation.json");
+		return new Identifier(EarthguardMod.MOD_ID, "animations/armour.animation.json");
 	}
 }

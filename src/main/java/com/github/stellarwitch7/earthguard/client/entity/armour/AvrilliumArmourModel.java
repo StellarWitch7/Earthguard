@@ -18,6 +18,6 @@ public class AvrilliumArmourModel extends AnimatedGeoModel<AvrilliumArmourItem> 
 	
 	@Override
 	public Identifier getAnimationResource(AvrilliumArmourItem animatable) {
-		return new Identifier(EarthguardMod.MOD_ID, "animations/armour_animation.json");
+		return new Identifier(EarthguardMod.MOD_ID, "animations/armour.animation.json");
 	}
 }

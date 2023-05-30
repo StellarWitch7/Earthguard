@@ -40,11 +40,10 @@ public abstract class PlayerEntityMixin
 			at = @At("HEAD"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
 	private void earthguard$blockDamage(DamageSource source, float amount,
 										CallbackInfo info) {
-		if (((PlayerEntity)(Object)this).hasStatusEffect(ModEffects.FURGUARD)) {
+		if (this.hasStatusEffect(ModEffects.FURGUARD)) {
 			if (!source.bypassesArmor() && !source.isFire()
 					&& !source.isFromFalling() && !source.isMagic()) {
-				blockedDamage += amount / ((PlayerEntity)(Object)this)
-						.getStatusEffect(ModEffects.FURGUARD)
+				blockedDamage += amount / this.getStatusEffect(ModEffects.FURGUARD)
 						.getAmplifier();
 				info.cancel();
 			}
@@ -53,8 +52,8 @@ public abstract class PlayerEntityMixin
 	
 	@Inject(method = "tick", at = @At("HEAD"))
 	private void earthguard$applyBlockedDamage(CallbackInfo info) {
-		if (((PlayerEntity)(Object)this).isAlive()) {
-			if (((PlayerEntity)(Object)this).hasStatusEffect(ModEffects.FURGUARD)) {
+		if (this.isAlive()) {
+			if (this.hasStatusEffect(ModEffects.FURGUARD)) {
 				ticksPassedSinceLastDrain += (blockedDamage + 2) / 2;
 				
 				if (ticksPassedSinceLastDrain >= ticksBetweenDrains) {
@@ -98,7 +97,7 @@ public abstract class PlayerEntityMixin
 		return blockedDamage;
 	}
 	@Override
-	public boolean earthguard$isLycan() {
+	public boolean earthguard$getLycanStatus() {
 		return isLycan;
 	}
 	

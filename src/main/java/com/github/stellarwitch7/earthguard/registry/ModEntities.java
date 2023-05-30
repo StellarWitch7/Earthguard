@@ -10,7 +10,7 @@ public class ModEntities {
 	public static final EntityType WILD_LYCAN =
 			ModRegistry.createEntity("Wild Lycan",
 					FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, WildLycanEntity::new)
-							.dimensions(EntityDimensions.fixed(0.4f, 0.3f)).build(),
+							.dimensions(EntityDimensions.fixed(1f, 2.5f)).build(),
 					WildLycanEntity.setAttributes());
 	//Call this to load the entities
 	public static void load() {}
