@@ -122,8 +122,8 @@ public class WildLycanEntity extends HostileEntity implements IAnimatable {
 		if (setLycan) {
 			if (target instanceof PlayerEntity player) {
 				((IPlayerEntityAccessor)player).earthguard$setLycanStatus(true);
-				player.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS,
-								60));
+				player.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA,
+								40));
 			} else {
 				var knockback = new Vector3d(this.getPos().x - target.getPos().x,
 						this.getPos().y - target.getPos().y,

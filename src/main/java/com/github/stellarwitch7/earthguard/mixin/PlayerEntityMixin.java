@@ -146,7 +146,7 @@ public abstract class PlayerEntityMixin
 				ticksPassedAsMonster = 0;
 			} else if (newForm == LycanForm.MONSTER && lycanForm != LycanForm.MONSTER) {
 				this.addStatusEffect(new StatusEffectInstance(StatusEffects.HEALTH_BOOST,
-						SpecialValues.BIG_INT, 2));
+						SpecialValues.BIG_INT, 4));
 				this.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION,
 						SpecialValues.BIG_INT));
 				ticksPassedAsMonster = 0;
