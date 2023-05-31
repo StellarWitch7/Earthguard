@@ -3,7 +3,7 @@ package com.github.stellarwitch7.earthguard.datagen;
 import com.github.stellarwitch7.earthguard.EarthguardDataGenerator;
 import com.github.stellarwitch7.earthguard.EarthguardMod;
 import com.github.stellarwitch7.earthguard.registry.ModRegistry;
-import com.github.stellarwitch7.earthguard.registry.registrable.RegistrableBlock;
+import com.github.stellarwitch7.earthguard.util.registrable.RegistrableBlock;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.SimpleFabricLootTableProvider;
 import net.minecraft.data.server.BlockLootTableGenerator;

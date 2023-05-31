@@ -6,4 +6,6 @@ public interface IPlayerEntityAccessor {
 	float earthguard$getBlockedDamage();
 	boolean earthguard$getLycanStatus();
 	void earthguard$setLycanStatus(boolean isLycan);
+	LycanForm earthguard$getLycanForm();
+	boolean earthguard$setLycanForm(LycanForm newForm);
 }

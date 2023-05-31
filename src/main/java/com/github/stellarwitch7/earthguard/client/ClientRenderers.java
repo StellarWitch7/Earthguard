@@ -1,9 +1,11 @@
-package com.github.stellarwitch7.earthguard.registry;
+package com.github.stellarwitch7.earthguard.client;
 
 import com.github.stellarwitch7.earthguard.client.entity.WildLycanEntityRenderer;
 import com.github.stellarwitch7.earthguard.client.entity.armour.AvrilliumArmourRenderer;
 import com.github.stellarwitch7.earthguard.client.entity.armour.BonemailArmourRenderer;
 import com.github.stellarwitch7.earthguard.client.entity.armour.SteelArmourRenderer;
+import com.github.stellarwitch7.earthguard.registry.ModEntities;
+import com.github.stellarwitch7.earthguard.registry.ModItems;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import software.bernie.geckolib3.renderers.geo.GeoArmorRenderer;
 

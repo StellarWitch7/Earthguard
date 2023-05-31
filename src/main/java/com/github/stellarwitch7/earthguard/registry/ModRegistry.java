@@ -1,9 +1,9 @@
 package com.github.stellarwitch7.earthguard.registry;
 
-import com.github.stellarwitch7.earthguard.registry.registrable.RegistrableBlock;
-import com.github.stellarwitch7.earthguard.registry.registrable.RegistrableEntity;
-import com.github.stellarwitch7.earthguard.registry.registrable.RegistrableItem;
-import com.github.stellarwitch7.earthguard.registry.registrable.RegistrableStatusEffect;
+import com.github.stellarwitch7.earthguard.util.registrable.RegistrableBlock;
+import com.github.stellarwitch7.earthguard.util.registrable.RegistrableEntity;
+import com.github.stellarwitch7.earthguard.util.registrable.RegistrableItem;
+import com.github.stellarwitch7.earthguard.util.registrable.RegistrableStatusEffect;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;

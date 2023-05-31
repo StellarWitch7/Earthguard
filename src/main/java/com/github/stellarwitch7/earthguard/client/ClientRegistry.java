@@ -1,4 +1,4 @@
-package com.github.stellarwitch7.earthguard.registry;
+package com.github.stellarwitch7.earthguard.client;
 
 public class ClientRegistry {
 	private static void loadRegistry() {

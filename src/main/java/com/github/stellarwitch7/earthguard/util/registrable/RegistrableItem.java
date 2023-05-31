@@ -1,4 +1,4 @@
-package com.github.stellarwitch7.earthguard.registry.registrable;
+package com.github.stellarwitch7.earthguard.util.registrable;
 
 import net.minecraft.data.client.Model;
 import net.minecraft.item.Item;

@@ -1,6 +1,6 @@
 package com.github.stellarwitch7.earthguard;
 
-import com.github.stellarwitch7.earthguard.registry.ClientRegistry;
+import com.github.stellarwitch7.earthguard.client.ClientRegistry;
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.MinecraftClient;
 

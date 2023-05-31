@@ -229,7 +229,7 @@
 				}
 			}
 		},
-		"animation.wild_lycan.bite": {
+		"animation.wild_lycan.attack": {
 			"loop": true
 		}
 	},
