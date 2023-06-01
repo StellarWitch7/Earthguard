@@ -48,6 +48,7 @@ public class ModRegistry {
 		ModItems.load();
 		ModBlockEntities.load();
 		ModEvents.load();
+		ModSoundEvents.load();
 	}
 	
 	public static void register() {
