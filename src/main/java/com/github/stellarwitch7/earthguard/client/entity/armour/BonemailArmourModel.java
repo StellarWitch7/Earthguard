@@ -17,7 +17,7 @@ public class BonemailArmourModel extends AnimatedGeoModel<BonemailArmourItem> {
 	}
 	
 	@Override
-	public Identifier getAnimationResource(BonemailArmourItem animatable) {
+	public Identifier getAnimationResource(BonemailArmourItem object) {
 		return new Identifier(EarthguardMod.MOD_ID, "animations/armour.animation.json");
 	}
 }

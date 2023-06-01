@@ -19,7 +19,7 @@ public class WildLycanEntityModel extends AnimatedGeoModel<WildLycanEntity> {
 	}
 	
 	@Override
-	public Identifier getAnimationResource(WildLycanEntity animatable) {
+	public Identifier getAnimationResource(WildLycanEntity object) {
 		return new Identifier(EarthguardMod.MOD_ID,
 				"animations/wild_lycan.animation.json");
 	}

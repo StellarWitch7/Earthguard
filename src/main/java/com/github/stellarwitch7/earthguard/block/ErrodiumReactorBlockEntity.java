@@ -1,6 +1,7 @@
 package com.github.stellarwitch7.earthguard.block;
 
 import com.github.stellarwitch7.earthguard.registry.ModBlockEntities;
+import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.math.BlockPos;
@@ -38,6 +39,12 @@ public class ErrodiumReactorBlockEntity extends BlockEntity implements IAnimatab
 		animationData.addAnimationController(new AnimationController(this, "controller",
 				0, this::predicate));
 	}
+	
+//	@Override
+//	public BlockRenderType getRenderType(BlockState state) {
+//		return BlockRenderType.ENTITYBLOCK_ANIMATED;
+//	}
+	
 	@Override
 	public AnimationFactory getFactory() {
 		return factory;

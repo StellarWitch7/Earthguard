@@ -1,5 +1,6 @@
 package com.github.stellarwitch7.earthguard.registry;
 
+import com.github.stellarwitch7.earthguard.item.block.ErrodiumReactorBlockItem;
 import com.github.stellarwitch7.earthguard.item.weapon.EarthCannonItem;
 import com.github.stellarwitch7.earthguard.item.consumable.CatnipItem;
 import com.github.stellarwitch7.earthguard.item.consumable.RejuvenationOrbItem;
@@ -95,29 +96,29 @@ public class ModItems {
 							.group(EarthguardMod.ITEM_GROUP)
 							.maxCount(80)));
 	//Create custom items here
-	public static final EnchantedFertilizerItem ENCHANTED_FERTILIZER = (EnchantedFertilizerItem)
+	public static final Item ENCHANTED_FERTILIZER =
 			ModRegistry.createItem("Enchanted Fertilizer", Models.GENERATED, false,
 					new EnchantedFertilizerItem(new FabricItemSettings()
 							.group(EarthguardMod.ITEM_GROUP)
 							.maxCount(32)));
-	public static final ChargedSoulGemItem CHARGED_SOUL_GEM = (ChargedSoulGemItem)
+	public static final Item CHARGED_SOUL_GEM =
 			ModRegistry.createItem("Charged Soul Gem", Models.GENERATED, false,
 					new ChargedSoulGemItem(new FabricItemSettings()
 							.group(EarthguardMod.ITEM_GROUP)
 							.maxCount(8)
 							.fireproof()));
-	public static final ActiveErrodiumItem ACTIVE_ERRODIUM = (ActiveErrodiumItem)
+	public static final Item ACTIVE_ERRODIUM =
 			ModRegistry.createItem("Active Errodium", Models.GENERATED, false,
 					new ActiveErrodiumItem(new FabricItemSettings()
 							.group(EarthguardMod.ITEM_GROUP)
 							.maxCount(64)));
-	public static final RejuvenationOrbItem REJUVENATION_ORB = (RejuvenationOrbItem)
+	public static final Item REJUVENATION_ORB =
 			ModRegistry.createItem("Orb of Rejuvenation", Models.GENERATED, false,
 					new RejuvenationOrbItem(new FabricItemSettings()
 							.group(EarthguardMod.ITEM_GROUP)
 							.maxCount(16)
 							.fireproof()));
-	public static final CatnipItem CATNIP = (CatnipItem)
+	public static final Item CATNIP =
 			ModRegistry.createItem("Catnip", Models.GENERATED, false,
 					new CatnipItem(new FabricItemSettings()
 							.group(EarthguardMod.ITEM_GROUP)
@@ -160,7 +161,7 @@ public class ModItems {
 							.maxCount(64)));
 	public static final BlockItem ERRODIUM_REACTOR = (BlockItem)
 			ModRegistry.createItem("Errodium Reactor", Models.CUBE_ALL, true,
-					new BlockItem(ModBlocks.ERRODIUM_REACTOR, new FabricItemSettings()
+					new ErrodiumReactorBlockItem(ModBlocks.ERRODIUM_REACTOR, new FabricItemSettings()
 							.group(EarthguardMod.ITEM_GROUP)
 							.maxCount(64)));
 	public static final BlockItem EMBERSTONE = (BlockItem)
