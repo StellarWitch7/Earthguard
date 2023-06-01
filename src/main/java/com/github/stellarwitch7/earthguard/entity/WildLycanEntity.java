@@ -60,8 +60,6 @@ public class WildLycanEntity extends HostileEntity implements IAnimatable {
 		this.targetSelector.add(2, new ActiveTargetGoal<>(this, MerchantEntity.class, true));
 	}
 	
-	
-	
 	private PlayState predicate(AnimationEvent event) {
 		var animations = new AnimationBuilder();
 		

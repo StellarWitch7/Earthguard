@@ -46,6 +46,7 @@ public class ModRegistry {
 		ModEffects.load();
 		ModEntities.load();
 		ModItems.load();
+		ModBlockEntities.load();
 		ModEvents.load();
 	}
 	
