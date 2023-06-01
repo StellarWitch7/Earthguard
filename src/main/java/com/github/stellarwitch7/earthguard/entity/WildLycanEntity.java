@@ -1,6 +1,6 @@
 package com.github.stellarwitch7.earthguard.entity;
 
-import com.github.stellarwitch7.earthguard.util.IPlayerEntityAccessor;
+import com.github.stellarwitch7.earthguard.util.accessor.IPlayerEntityAccessor;
 import net.minecraft.client.util.math.Vector3d;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;

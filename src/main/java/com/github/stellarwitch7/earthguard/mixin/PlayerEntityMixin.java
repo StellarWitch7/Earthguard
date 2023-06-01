@@ -2,9 +2,10 @@ package com.github.stellarwitch7.earthguard.mixin;
 
 import com.github.stellarwitch7.earthguard.EarthguardMod;
 import com.github.stellarwitch7.earthguard.registry.ModEffects;
-import com.github.stellarwitch7.earthguard.util.IPlayerEntityAccessor;
+import com.github.stellarwitch7.earthguard.util.accessor.IPlayerEntityAccessor;
 import com.github.stellarwitch7.earthguard.util.LycanForm;
 import com.github.stellarwitch7.earthguard.util.SpecialValues;
+import com.mojang.serialization.DataResult;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
@@ -15,11 +16,15 @@ import net.minecraft.entity.player.HungerManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.Objects;
 
 @Debug(export = true)
 @Mixin(PlayerEntity.class)
@@ -81,14 +86,14 @@ public abstract class PlayerEntityMixin
 				blockedDamage = 0;
 			}
 			
-			if (lycanForm == LycanForm.MONSTER) {
+			if (Objects.equals(lycanForm.getId(), LycanForm.MONSTER.getId())) {
 				this.addStatusEffect(new StatusEffectInstance(ModEffects.FURGUARD,
 						60, this.getHungerManager().getFoodLevel() / 4));
 				this.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH,
 						60, (int)(this.getMaxHealth() - this.getHealth()) / 4));
-				ticksPassedAsMonster++;
+				earthguard$setMonsterFormTime(earthguard$getMonsterFormTime() + 1);
 				
-				if (ticksPassedAsMonster > monsterFormLength) {
+				if (earthguard$getMonsterFormTime() > monsterFormLength) {
 					earthguard$setLycanForm(LycanForm.HUMAN);
 				}
 			}
@@ -100,8 +105,18 @@ public abstract class PlayerEntityMixin
 	@Inject(method = "readCustomDataFromNbt", at = @At("HEAD"))
 	private void earthguard$readCustomDataFromNbt(NbtCompound nbt,
 												  CallbackInfo info) {
-		isLycan = nbt.getBoolean("isLycan");
+		earthguard$setLycanStatus(nbt.getBoolean("isLycan"));
 		EarthguardMod.LOGGER.info("Reading NBT: isLycan = " + isLycan); //Debug
+		
+		earthguard$setMonsterFormTime(nbt.getInt("monsterFormTicks"));
+		EarthguardMod.LOGGER.info("Reading NBT: monsterFormTicks = " + ticksPassedAsMonster
+				+ " of " + monsterFormLength);
+		
+		NbtElement element = nbt.get("lycanForm");
+		DataResult<LycanForm> value = LycanForm.CODEC.parse(NbtOps.INSTANCE, element);
+		lycanForm = value.resultOrPartial(EarthguardMod.LOGGER::error).orElseThrow();
+		EarthguardMod.LOGGER.info("Reading NBT: lycanForm = "
+				+ lycanForm.getId()); //Debug
 	}
 	
 	@Inject(method = "writeCustomDataToNbt", at = @At("HEAD"))
@@ -109,6 +124,18 @@ public abstract class PlayerEntityMixin
 												 CallbackInfo info) {
 		nbt.putBoolean("isLycan", isLycan);
 		EarthguardMod.LOGGER.info("Writing NBT: isLycan = " + isLycan); //Debug
+		
+		nbt.putInt("monsterFormTicks", ticksPassedAsMonster);
+		EarthguardMod.LOGGER.info("Writing NBT: monsterFormTicks = " + ticksPassedAsMonster
+				+ " of " + monsterFormLength);
+		
+		DataResult<NbtElement> value =
+				LycanForm.CODEC.encodeStart(NbtOps.INSTANCE,
+						lycanForm);
+		NbtElement element = value.resultOrPartial(EarthguardMod.LOGGER::error).orElseThrow();
+		nbt.put("lycanForm", element);
+		EarthguardMod.LOGGER.info("Writing NBT: lycanForm = "
+				+ lycanForm.getId()); //Debug
 	}
 	
 	@Override
@@ -133,23 +160,25 @@ public abstract class PlayerEntityMixin
 	
 	@Override
 	public boolean earthguard$setLycanForm(LycanForm newForm) {
-		if (newForm == LycanForm.HUMAN) {
+		if (newForm.getId() == LycanForm.HUMAN.getId()) {
 			this.removeStatusEffect(StatusEffects.NIGHT_VISION);
 			lycanForm = newForm;
 			return true;
 		}
 		
 		if (isLycan) {
-			if (lycanForm == LycanForm.MONSTER && newForm != LycanForm.MONSTER) {
+			if (lycanForm == LycanForm.MONSTER
+					&& newForm != LycanForm.MONSTER) {
 				this.removeStatusEffect(StatusEffects.HEALTH_BOOST);
 				this.removeStatusEffect(StatusEffects.REGENERATION);
-				ticksPassedAsMonster = 0;
-			} else if (newForm == LycanForm.MONSTER && lycanForm != LycanForm.MONSTER) {
+				earthguard$setMonsterFormTime(0);
+			} else if (newForm == LycanForm.MONSTER
+					&& lycanForm != LycanForm.MONSTER) {
 				this.addStatusEffect(new StatusEffectInstance(StatusEffects.HEALTH_BOOST,
 						SpecialValues.BIG_INT, 4));
 				this.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION,
 						SpecialValues.BIG_INT));
-				ticksPassedAsMonster = 0;
+				earthguard$setMonsterFormTime(0);
 			}
 			
 			if (newForm != LycanForm.HUMAN) {
@@ -162,6 +191,13 @@ public abstract class PlayerEntityMixin
 		}
 		
 		return false;
+	}
+	
+	public int earthguard$getMonsterFormTime() {
+		return ticksPassedAsMonster;
+	}
+	public void earthguard$setMonsterFormTime(int ticks) {
+		ticksPassedAsMonster = ticks;
 	}
 	
 	@Shadow

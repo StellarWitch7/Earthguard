@@ -1,5 +1,6 @@
-package com.github.stellarwitch7.earthguard.util;
+package com.github.stellarwitch7.earthguard.util.accessor;
 
+import com.github.stellarwitch7.earthguard.util.LycanForm;
 import net.minecraft.nbt.NbtCompound;
 
 public interface IPlayerEntityAccessor {
@@ -8,4 +9,6 @@ public interface IPlayerEntityAccessor {
 	void earthguard$setLycanStatus(boolean isLycan);
 	LycanForm earthguard$getLycanForm();
 	boolean earthguard$setLycanForm(LycanForm newForm);
+	int earthguard$getMonsterFormTime();
+	void earthguard$setMonsterFormTime(int ticks);
 }
