@@ -3,10 +3,7 @@ package com.github.stellarwitch7.earthguard.datagen;
 import com.github.stellarwitch7.earthguard.EarthguardDataGenerator;
 import com.github.stellarwitch7.earthguard.EarthguardMod;
 import com.github.stellarwitch7.earthguard.registry.ModRegistry;
-import com.github.stellarwitch7.earthguard.util.registrable.RegistrableBlock;
-import com.github.stellarwitch7.earthguard.util.registrable.RegistrableEntity;
-import com.github.stellarwitch7.earthguard.util.registrable.RegistrableItem;
-import com.github.stellarwitch7.earthguard.util.registrable.RegistrableStatusEffect;
+import com.github.stellarwitch7.earthguard.util.registrable.*;
 import org.apache.commons.lang3.StringUtils;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
@@ -48,6 +45,11 @@ class UkEnglishLangProvider extends FabricLanguageProvider {
 		for (RegistrableItem data : ModRegistry.publicRegistryItems) {
 			translationBuilder.add(data.item, data.name);
 		}
+		
+		//Generate sound translations
+		for (RegistrableSound data : ModRegistry.publicRegistrySounds) {
+			translationBuilder.add("subtitles." + EarthguardMod.MOD_ID + data.id, data.name);
+		}
 	}
 }
 
@@ -80,6 +82,11 @@ class UsEnglishLangProvider extends FabricLanguageProvider {
 		//Generate item translations
 		for (RegistrableItem data : ModRegistry.publicRegistryItems) {
 			translationBuilder.add(data.item, data.name);
+		}
+		
+		//Generate sound translations
+		for (RegistrableSound data : ModRegistry.publicRegistrySounds) {
+			translationBuilder.add("subtitles." + EarthguardMod.MOD_ID + data.id, data.name);
 		}
 	}
 }
