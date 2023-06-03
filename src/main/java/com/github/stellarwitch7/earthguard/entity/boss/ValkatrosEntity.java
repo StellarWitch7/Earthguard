@@ -24,6 +24,14 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.Random;
 
+/*
+Valkatros, deity of death and destruction.
+Fire, explosions, raw chaos
+Phase one: human-like, on the ground, short-range attacks
+Phase two: exposed core, in the air, long ranged attacks
+Lightning, explosive projectiles
+*/
+
 public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, IAnimatable {
 	private AnimationFactory factory = new AnimationFactory(this);
 	private BossPhase bossPhase = BossPhase.ONE;
