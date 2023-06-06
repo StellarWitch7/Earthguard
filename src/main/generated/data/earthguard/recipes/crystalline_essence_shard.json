@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "earthguard:crystalline_essence_block"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "earthguard:crystalline_essence_shard"
+  }
+}

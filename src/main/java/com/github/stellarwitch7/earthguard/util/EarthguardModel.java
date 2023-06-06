@@ -6,11 +6,20 @@ import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 
 public class EarthguardModel<T extends IAnimatable> extends AnimatedGeoModel<T> {
+	private final boolean noAnimation;
 	private final String id;
 	private final ModelType modelType;
 	
 	public EarthguardModel(String id, ModelType modelType) {
 		super();
+		this.noAnimation = false;
+		this.id = id;
+		this.modelType = modelType;
+	}
+	
+	public EarthguardModel(String id, ModelType modelType, boolean hasNoAnimation) {
+		super();
+		this.noAnimation = hasNoAnimation;
 		this.id = id;
 		this.modelType = modelType;
 	}
@@ -27,6 +36,10 @@ public class EarthguardModel<T extends IAnimatable> extends AnimatedGeoModel<T> 
 	
 	@Override
 	public Identifier getAnimationResource(T object) {
-		return new Identifier(EarthguardMod.MOD_ID, "animations/" + id + ".animation.json");
+		if (noAnimation) {
+			return new Identifier(EarthguardMod.MOD_ID, "animations/empty.animation.json");
+		} else {
+			return new Identifier(EarthguardMod.MOD_ID, "animations/" + id + ".animation.json");
+		}
 	}
 }

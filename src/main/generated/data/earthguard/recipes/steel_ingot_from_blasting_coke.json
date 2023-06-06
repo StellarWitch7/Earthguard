@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:blasting",
+  "cookingtime": 600,
+  "experience": 5.0,
+  "group": "steel",
+  "ingredient": {
+    "item": "earthguard:coke"
+  },
+  "result": "earthguard:steel_ingot"
+}

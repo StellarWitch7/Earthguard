@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "earthguard:avrillium_ingot"
+    },
+    "I": {
+      "item": "earthguard:steel_boots"
+    }
+  },
+  "pattern": [
+    "# #",
+    "#I#"
+  ],
+  "result": {
+    "item": "earthguard:avrillium_boots"
+  }
+}

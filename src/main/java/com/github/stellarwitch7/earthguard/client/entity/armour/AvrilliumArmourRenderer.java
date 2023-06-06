@@ -7,7 +7,7 @@ import software.bernie.geckolib3.renderers.geo.GeoArmorRenderer;
 
 public class AvrilliumArmourRenderer extends GeoArmorRenderer<AvrilliumArmourItem> {
 	public AvrilliumArmourRenderer() {
-		super(new AvrilliumArmourModel());
+		super(new EarthguardModel<>("avrillium_armour", ModelType.ARMOUR, true));
 		
 		this.headBone = "armorHead";
 		this.bodyBone = "armorBody";

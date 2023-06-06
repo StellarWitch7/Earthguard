@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "cookingtime": 300,
+  "experience": 3.0,
+  "group": "avrillium",
+  "ingredient": {
+    "item": "earthguard:raw_avrillium"
+  },
+  "result": "earthguard:avrillium_ingot"
+}
