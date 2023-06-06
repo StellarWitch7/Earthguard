@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 public class BossPhase {
-	private String id;
+	private final String id;
 	
 	public BossPhase(String id) {
 		this.id = id;

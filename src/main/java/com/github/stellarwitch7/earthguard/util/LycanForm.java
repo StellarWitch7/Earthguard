@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 public class LycanForm {
-	private String id;
+	private final String id;
 	
 	public LycanForm(String id) {
 		this.id = id;

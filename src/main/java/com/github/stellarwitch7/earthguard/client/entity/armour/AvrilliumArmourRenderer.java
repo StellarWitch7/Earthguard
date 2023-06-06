@@ -1,6 +1,8 @@
 package com.github.stellarwitch7.earthguard.client.entity.armour;
 
 import com.github.stellarwitch7.earthguard.item.armour.AvrilliumArmourItem;
+import com.github.stellarwitch7.earthguard.util.EarthguardModel;
+import com.github.stellarwitch7.earthguard.util.ModelType;
 import software.bernie.geckolib3.renderers.geo.GeoArmorRenderer;
 
 public class AvrilliumArmourRenderer extends GeoArmorRenderer<AvrilliumArmourItem> {

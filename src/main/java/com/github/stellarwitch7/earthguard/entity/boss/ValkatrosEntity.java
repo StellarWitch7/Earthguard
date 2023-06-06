@@ -10,6 +10,8 @@ import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.RangedAttackMob;
 import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.boss.BossBar;
+import net.minecraft.entity.boss.ServerBossBar;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.mob.HostileEntity;
@@ -39,6 +41,7 @@ Lightning, explosive projectiles
 */
 
 public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, IAnimatable {
+	private final ServerBossBar bossBar;
 	private final double dashDistance = 20.0d;
 	private final int dashLength = (int)(SpecialValues.TICK_SECOND * 2.5);
 	private final float dashDamage = 10.0f;
@@ -55,14 +58,17 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 	private int lightningTimer = 0;
 	private Vec3d lightningTargetPos;
 	
-	protected ValkatrosEntity(EntityType<? extends HostileEntity> entityType, World world) {
+	public ValkatrosEntity(EntityType<? extends HostileEntity> entityType, World world) {
 		super(entityType, world);
+		this.bossBar = new ServerBossBar(this.getDisplayName(),
+				BossBar.Color.RED,
+				BossBar.Style.PROGRESS);
 	}
 	
 	
 	
 	@Override
-	protected void initGoals() {
+	public void initGoals() {
 		this.goalSelector.add(2, new ProjectileAttackGoal(this, 1.0, 40, 20.0f));
 		this.goalSelector.add(5, new FlyGoal(this, 1.0));
 		this.goalSelector.add(6, new LookAtEntityGoal(this, PlayerEntity.class, 8.0f));
@@ -150,6 +156,7 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 	@Override
 	public void tick() {
 		super.tick();
+		bossBar.setPercent(this.getHealth());
 		
 		if (isDashing) {
 			isDashing = dashLogic(dashTarget);
