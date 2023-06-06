@@ -42,6 +42,7 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 	private final double dashDistance = 20.0d;
 	private final int dashLength = (int)(SpecialValues.TICK_SECOND * 2.5);
 	private final float dashDamage = 10.0f;
+	private final double dashSpeed = 2.0d;
 	private final int lightningDelay = SpecialValues.TICK_SECOND * 3;
 	private AnimationFactory factory = new AnimationFactory(this);
 	private BossPhase bossPhase = BossPhase.ONE;
@@ -111,7 +112,7 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 			return false;
 		}
 		
-		this.setVelocity(target.getPos().multiply(2));
+		this.setVelocity(this.getPos().subtract(target.getPos()).normalize().multiply(dashSpeed));
 		return true;
 	}
 	
