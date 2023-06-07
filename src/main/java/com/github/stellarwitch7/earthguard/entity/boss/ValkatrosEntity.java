@@ -54,6 +54,7 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 	private final float dashDamage = 10.0f;
 	private final double dashSpeed = 1.8d;
 	private final int lightningDelay = SpecialValues.TICK_SECOND * 3;
+	private final double chaosProjectileSpeed = 1.5d;
 	private BossPhase bossPhase = BossPhase.ONE;
 	private boolean approachTarget = false;
 	private boolean transitioning = false;
@@ -101,7 +102,7 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 	private void attackSelector(LivingEntity target) {
 		Random random = new Random();
 		
-		bossPhase = BossPhase.TWO; //Testing
+		bossPhase = BossPhase.TWO; //TODO testing
 		
 		if (bossPhase == BossPhase.ONE) {
 			if (dashCooldownLeft <= 0
@@ -153,9 +154,13 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 	}
 	
 	private void launchChaosProjectile(LivingEntity target) {
-		var newProjectile = new ChaosProjectile(ModEntities.CHAOS_PROJECTILE, world)
-				.setValues(target.getPos().subtract(this.getPos()).normalize(), 1.5d);
-		newProjectile.setPosition(this.getPos());
+		var newProjectile = new ChaosProjectile(ModEntities.CHAOS_PROJECTILE, world);
+		Vec3d vector = this.getPos().add(0.0d, 3.0d, 0.0d);
+		newProjectile.setPosition(vector);
+		newProjectile.setTargetMovement(target.getPos()
+				.subtract(vector)
+				.normalize()
+				.multiply(chaosProjectileSpeed));
 		world.spawnEntity(newProjectile);
 	}
 	
@@ -256,7 +261,7 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 				animations.addAnimation("animation.valkatros.phase_two_idle", true);
 			}
 		} else if (bossPhase == BossPhase.ONE) {
-			animations.addAnimation("animationg.valkatros.phase_one_idle", true);
+			animations.addAnimation("animation.valkatros.phase_one_idle", true);
 		}
 		
 		event.getController().setAnimation(animations);

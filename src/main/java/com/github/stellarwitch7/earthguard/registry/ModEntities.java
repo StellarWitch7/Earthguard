@@ -12,17 +12,22 @@ public class ModEntities {
 	public static final EntityType WILD_LYCAN =
 			ModRegistry.createEntity("Wild Lycan",
 					FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, WildLycanEntity::new)
-							.dimensions(EntityDimensions.fixed(1f, 2.5f)).build(),
+							.dimensions(EntityDimensions.fixed(1f, 2.5f))
+							.build(),
 					WildLycanEntity.setAttributes());
 	public static final EntityType VALKATROS =
 			ModRegistry.createEntity("Valkatros",
 					FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, ValkatrosEntity::new)
-							.dimensions(EntityDimensions.fixed(1f, 1.5f)).build(),
+							.dimensions(EntityDimensions.fixed(1f, 1.5f))
+							.fireImmune()
+							.build(),
 					ValkatrosEntity.setAttributes());
 	public static final EntityType CHAOS_PROJECTILE =
 			ModRegistry.createEntity("Chaos Projectile",
 					FabricEntityTypeBuilder.create(SpawnGroup.MISC, ChaosProjectile::new)
-							.dimensions(EntityDimensions.fixed(0.5f, 0.5f)).build());
+							.dimensions(EntityDimensions.fixed(0.5f, 0.5f))
+							.fireImmune()
+							.build());
 	//Call this to load the entities
 	public static void load() {}
 }
