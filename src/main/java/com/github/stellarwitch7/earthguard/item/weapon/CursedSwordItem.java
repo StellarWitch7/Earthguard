@@ -1,17 +1,17 @@
 package com.github.stellarwitch7.earthguard.item.weapon;
 
 import com.github.stellarwitch7.earthguard.item.ModSwordItem;
+import com.github.stellarwitch7.earthguard.util.ICursedItem;
 import net.minecraft.entity.*;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
-import net.minecraft.world.World;
 
 import java.util.List;
 
-public class CursedSwordItem extends ModSwordItem {
+public class CursedSwordItem extends ModSwordItem implements ICursedItem {
 	private final List<StatusEffect> afflictions = List.of(StatusEffects.BLINDNESS,
 			StatusEffects.GLOWING,
 			StatusEffects.NAUSEA,
@@ -52,10 +52,8 @@ public class CursedSwordItem extends ModSwordItem {
 		return true;
 	}
 	
-	//Alpha, likely not functional
 	@Override
 	public void onItemEntityDestroyed(ItemEntity entity) {
-		World world = entity.getWorld();
-		world.spawnEntity(new LightningEntity(EntityType.LIGHTNING_BOLT, world));
+		ICursedItem.super.summonLightning(entity);
 	}
 }

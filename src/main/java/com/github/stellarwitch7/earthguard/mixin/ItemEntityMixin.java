@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 public abstract class ItemEntityMixin {
 	@Inject(method = "damage",
 			at = @At("HEAD"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
-	private void damage(DamageSource source, float amount,
+	private void earthguard$isExplosiveImmune(DamageSource source, float amount,
 						CallbackInfoReturnable<Boolean> info) {
 		//Allows items implementing IExplosiveItem to be explosion immune
 		if (((ItemEntity)(Object)this).getStack().getItem() instanceof IExplosiveItem

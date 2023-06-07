@@ -1,4 +1,4 @@
-package com.github.stellarwitch7.earthguard.item.weapon;
+package com.github.stellarwitch7.earthguard.item;
 
 import com.github.stellarwitch7.earthguard.EarthguardMod;
 import com.github.stellarwitch7.earthguard.registry.ModItems;

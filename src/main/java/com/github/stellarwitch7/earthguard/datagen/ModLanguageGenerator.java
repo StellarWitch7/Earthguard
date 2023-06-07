@@ -3,9 +3,7 @@ package com.github.stellarwitch7.earthguard.datagen;
 import com.github.stellarwitch7.earthguard.EarthguardDataGenerator;
 import com.github.stellarwitch7.earthguard.EarthguardMod;
 import com.github.stellarwitch7.earthguard.registry.ModRegistry;
-import com.github.stellarwitch7.earthguard.registry.registrable.RegistrableBlock;
-import com.github.stellarwitch7.earthguard.registry.registrable.RegistrableItem;
-import com.github.stellarwitch7.earthguard.registry.registrable.RegistrableStatusEffect;
+import com.github.stellarwitch7.earthguard.util.registrable.*;
 import org.apache.commons.lang3.StringUtils;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
@@ -38,9 +36,19 @@ class UkEnglishLangProvider extends FabricLanguageProvider {
 			translationBuilder.add(data.effect, data.name);
 		}
 		
+		//Generate entity translations
+		for (RegistrableEntity data : ModRegistry.publicRegistryEntities) {
+			translationBuilder.add(data.entity, data.name);
+		}
+		
 		//Generate item translations
 		for (RegistrableItem data : ModRegistry.publicRegistryItems) {
 			translationBuilder.add(data.item, data.name);
+		}
+		
+		//Generate sound translations
+		for (RegistrableSound data : ModRegistry.publicRegistrySounds) {
+			translationBuilder.add("subtitles." + EarthguardMod.MOD_ID + "." + data.id, data.name);
 		}
 	}
 }
@@ -66,9 +74,19 @@ class UsEnglishLangProvider extends FabricLanguageProvider {
 			translationBuilder.add(data.effect, data.name);
 		}
 		
+		//Generate entity translations
+		for (RegistrableEntity data : ModRegistry.publicRegistryEntities) {
+			translationBuilder.add(data.entity, data.name);
+		}
+		
 		//Generate item translations
 		for (RegistrableItem data : ModRegistry.publicRegistryItems) {
 			translationBuilder.add(data.item, data.name);
+		}
+		
+		//Generate sound translations
+		for (RegistrableSound data : ModRegistry.publicRegistrySounds) {
+			translationBuilder.add("subtitles." + EarthguardMod.MOD_ID + "." + data.id, data.name);
 		}
 	}
 }

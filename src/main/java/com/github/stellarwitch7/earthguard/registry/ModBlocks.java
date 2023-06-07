@@ -1,5 +1,6 @@
 package com.github.stellarwitch7.earthguard.registry;
 
+import com.github.stellarwitch7.earthguard.block.ErrodiumReactorBlock;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.Material;
@@ -17,10 +18,11 @@ public class ModBlocks {
 							.requiresTool()));
 	public static final Block ERRODIUM_REACTOR =
 			ModRegistry.createBlock("Errodium Reactor", false, false,
-					new Block(FabricBlockSettings.of(Material.METAL)
+					new ErrodiumReactorBlock(FabricBlockSettings.of(Material.METAL)
 							.hardness(4.0f)
 							.resistance(7.0f)
-							.requiresTool()));
+							.requiresTool()
+							.nonOpaque()));
 	//Blocks after this comment should have only hasSimpleLoot set to true
 	public static final Block ERRODIUM_ROD =
 			ModRegistry.createBlock("Errodium Rod", true, false,

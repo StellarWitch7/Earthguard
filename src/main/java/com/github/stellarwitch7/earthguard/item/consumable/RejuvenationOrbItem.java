@@ -1,7 +1,6 @@
 package com.github.stellarwitch7.earthguard.item.consumable;
 
 import com.github.stellarwitch7.earthguard.util.IConsumableItem;
-import com.github.stellarwitch7.earthguard.util.IPlayerEntityAccessor;
 import com.github.stellarwitch7.earthguard.item.ModItem;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -19,12 +18,6 @@ public class RejuvenationOrbItem extends ModItem implements IConsumableItem {
 	
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity playerEntity, Hand hand) {
-		//FOR DEBUGGING -->
-		if (playerEntity instanceof IPlayerEntityAccessor) {
-			((IPlayerEntityAccessor)playerEntity).setLycanStatus(true);
-		}
-		//<--
-		
 		StatusEffectInstance current = playerEntity.getStatusEffect(StatusEffects.REGENERATION);
 		int newAmplifier = current != null ? current.getAmplifier() + 4 : 4;
 		playerEntity.getStackInHand(hand).decrement(1);

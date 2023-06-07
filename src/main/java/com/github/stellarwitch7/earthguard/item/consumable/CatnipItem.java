@@ -1,10 +1,9 @@
 package com.github.stellarwitch7.earthguard.item.consumable;
 
-import com.github.stellarwitch7.earthguard.registry.ModEffects;
 import com.github.stellarwitch7.earthguard.item.ModItem;
 import com.github.stellarwitch7.earthguard.util.IConsumableItem;
-import com.github.stellarwitch7.earthguard.util.IPlayerEntityAccessor;
-import net.minecraft.entity.effect.StatusEffectInstance;
+import com.github.stellarwitch7.earthguard.util.accessor.IPlayerEntityAccessor;
+import com.github.stellarwitch7.earthguard.util.LycanForm;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
@@ -19,9 +18,8 @@ public class CatnipItem extends ModItem implements IConsumableItem {
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity playerEntity, Hand hand) {
 		if (playerEntity instanceof IPlayerEntityAccessor) {
-			if (((IPlayerEntityAccessor)playerEntity).isLycan()) {
-				playerEntity.addStatusEffect(new StatusEffectInstance(ModEffects.FURGUARD,
-						300, 1));
+			if (((IPlayerEntityAccessor)playerEntity).earthguard$getLycanStatus()) {
+				((IPlayerEntityAccessor)playerEntity).earthguard$setLycanForm(LycanForm.MONSTER);
 				playerEntity.getStackInHand(hand).decrement(1);
 				return TypedActionResult.success(playerEntity.getStackInHand(hand));
 			}

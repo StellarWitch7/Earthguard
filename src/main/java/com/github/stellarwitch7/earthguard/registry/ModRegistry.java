@@ -1,8 +1,10 @@
 package com.github.stellarwitch7.earthguard.registry;
 
-import com.github.stellarwitch7.earthguard.registry.registrable.RegistrableBlock;
-import com.github.stellarwitch7.earthguard.registry.registrable.RegistrableItem;
-import com.github.stellarwitch7.earthguard.registry.registrable.RegistrableStatusEffect;
+import com.github.stellarwitch7.earthguard.util.registrable.*;
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.attribute.DefaultAttributeContainer;
+import net.minecraft.sound.SoundEvent;
 import org.apache.commons.lang3.StringUtils;
 import com.github.stellarwitch7.earthguard.EarthguardMod;
 import net.minecraft.block.Block;
@@ -30,14 +32,26 @@ public class ModRegistry {
 			new ArrayList<>();
 	public static final List<RegistrableItem> publicRegistryItems =
 			Collections.unmodifiableList(registryItems);
+	private static final ArrayList<RegistrableEntity> registryEntities =
+			new ArrayList<>();
+	public static final List<RegistrableEntity> publicRegistryEntities =
+			Collections.unmodifiableList(registryEntities);
+	private static final ArrayList<RegistrableSound> registrySounds =
+			new ArrayList<>();
+	public static final List<RegistrableSound> publicRegistrySounds =
+			Collections.unmodifiableList(registrySounds);
 	
 	//Loads the other registry classes
-	public static void loadRegistry() {
+	private static void loadRegistry() {
 		EarthguardMod.LOGGER.info("Preparing registry");
 		ModBlocks.load();
 		ModEffects.load();
+		ModEntities.load();
 		ModItems.load();
-		ModRenderers.load();
+		ModBlockEntities.load();
+		ModEvents.load();
+		ModSoundEvents.load();
+		ModMusic.load();
 	}
 	
 	public static void register() {
@@ -71,6 +85,19 @@ public class ModRegistry {
 					data.effect);
 		}
 		
+		//Register entities
+		EarthguardMod.LOGGER.info("Registering "
+				+ StringUtils.capitalize(EarthguardMod.MOD_ID)
+				+ " entities");
+		for (RegistrableEntity data : registryEntities) {
+			EarthguardMod.LOGGER.info("Registering entity <"
+					+ EarthguardMod.MOD_ID + ":"
+					+ data.id + ">");
+			Registry.register(Registry.ENTITY_TYPE,
+					new Identifier(EarthguardMod.MOD_ID, data.id),
+					data.entity);
+		}
+		
 		//Register items
 		EarthguardMod.LOGGER.info("Registering "
 				+ StringUtils.capitalize(EarthguardMod.MOD_ID)
@@ -82,6 +109,19 @@ public class ModRegistry {
 			Registry.register(Registry.ITEM,
 					new Identifier(EarthguardMod.MOD_ID, data.id),
 					data.item);
+		}
+		
+		//Register sound events
+		EarthguardMod.LOGGER.info("Registering "
+				+ StringUtils.capitalize(EarthguardMod.MOD_ID)
+				+ " sound events");
+		for (RegistrableSound data : registrySounds) {
+			EarthguardMod.LOGGER.info("Registering sound event <"
+					+ EarthguardMod.MOD_ID + ":"
+					+ data.id + ">");
+			Registry.register(Registry.SOUND_EVENT,
+					new Identifier(EarthguardMod.MOD_ID, data.id),
+					data.soundEvent);
 		}
 	}
 	
@@ -122,6 +162,27 @@ public class ModRegistry {
 		return effect;
 	}
 	
+	public static EntityType createEntity(String name, EntityType entityType,
+										  DefaultAttributeContainer.Builder attributes) {
+		var newEntity = new RegistrableEntity();
+		newEntity.name = name;
+		newEntity.id = name.toLowerCase(Locale.ROOT).replace(" ", "_");
+		newEntity.entity = entityType;
+		FabricDefaultAttributeRegistry.register(entityType,
+				attributes);
+		registryEntities.add(newEntity);
+		return entityType;
+	}
+	
+	public static EntityType createEntity(String name, EntityType entityType) {
+		var newEntity = new RegistrableEntity();
+		newEntity.name = name;
+		newEntity.id = name.toLowerCase(Locale.ROOT).replace(" ", "_");
+		newEntity.entity = entityType;
+		registryEntities.add(newEntity);
+		return entityType;
+	}
+	
 	public static Item createItem(String name, Model model, boolean isBlock, Item item) {
 		var newItem = new RegistrableItem();
 		newItem.name = name;
@@ -131,5 +192,17 @@ public class ModRegistry {
 		newItem.item = item;
 		registryItems.add(newItem);
 		return item;
+	}
+	
+	public static SoundEvent createSound(String name) {
+		String id = name.toLowerCase(Locale.ROOT).replace(" ", "_");
+		Identifier identifier = new Identifier(EarthguardMod.MOD_ID, id);
+		var newSound = new RegistrableSound();
+		var soundEvent = new SoundEvent(identifier);
+		newSound.id = id;
+		newSound.name = name;
+		newSound.soundEvent = soundEvent;
+		registrySounds.add(newSound);
+		return soundEvent;
 	}
 }

@@ -8,8 +8,12 @@
   "block.earthguard.errodium_reactor": "Errodium Reactor",
   "block.earthguard.errodium_rod": "Errodium Rod",
   "block.earthguard.limestone_block": "Limestone Block",
+  "effect.earthguard.atomic_errosion": "Atomic Errosion",
   "effect.earthguard.furguard": "Furguard",
   "effect.earthguard.peacekeeper": "Peacekeeper",
+  "entity.earthguard.chaos_projectile": "Chaos Projectile",
+  "entity.earthguard.valkatros": "Valkatros",
+  "entity.earthguard.wild_lycan": "Wild Lycan",
   "item.earthguard.active_errodium": "Active Errodium",
   "item.earthguard.avrillium_axe": "Avrillium Axe",
   "item.earthguard.avrillium_boots": "Avrillium Boots",
@@ -47,5 +51,6 @@
   "item.earthguard.steel_ingot": "Steel Ingot",
   "item.earthguard.steel_leggings": "Steel Leggings",
   "item.earthguard.weeping_heart": "Weeping Heart",
-  "itemGroup.earthguard.main_item_group": "Earthguard"
+  "itemGroup.earthguard.main_item_group": "Earthguard",
+  "subtitles.earthguard.shimmerthing": "Shimmerthing"
 }

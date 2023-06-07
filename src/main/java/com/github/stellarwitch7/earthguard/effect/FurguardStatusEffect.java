@@ -8,9 +8,7 @@ import net.minecraft.sound.SoundEvents;
 public class FurguardStatusEffect extends StatusEffect {
 	private int ticker = 0;
 	public FurguardStatusEffect() {
-		super(
-				StatusEffectCategory.BENEFICIAL,
-				0x98D982);
+		super(StatusEffectCategory.BENEFICIAL, 0x98D982);
 	}
 	
 	@Override
