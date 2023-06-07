@@ -6,12 +6,14 @@ import com.github.stellarwitch7.earthguard.client.entity.armour.AvrilliumArmourR
 import com.github.stellarwitch7.earthguard.client.entity.armour.BonemailArmourRenderer;
 import com.github.stellarwitch7.earthguard.client.entity.armour.SteelArmourRenderer;
 import com.github.stellarwitch7.earthguard.client.entity.boss.ValkatrosEntityRenderer;
+import com.github.stellarwitch7.earthguard.client.entity.projectile.ChaosProjectileRenderer;
 import com.github.stellarwitch7.earthguard.client.item.ErrodiumReactorBlockItemRenderer;
 import com.github.stellarwitch7.earthguard.registry.ModBlockEntities;
 import com.github.stellarwitch7.earthguard.registry.ModEntities;
 import com.github.stellarwitch7.earthguard.registry.ModItems;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.minecraft.client.render.entity.ProjectileEntityRenderer;
 import software.bernie.geckolib3.renderers.geo.GeoArmorRenderer;
 import software.bernie.geckolib3.renderers.geo.GeoItemRenderer;
 
@@ -29,6 +31,7 @@ public class ClientRenderers {
 		//Create new entity renderers here
 		EntityRendererRegistry.register(ModEntities.WILD_LYCAN, WildLycanEntityRenderer::new);
 		EntityRendererRegistry.register(ModEntities.VALKATROS, ValkatrosEntityRenderer::new);
+		EntityRendererRegistry.register(ModEntities.CHAOS_PROJECTILE, ChaosProjectileRenderer::new);
 		
 		//Create new armour renderers here
 		GeoArmorRenderer.registerArmorRenderer(new BonemailArmourRenderer(),

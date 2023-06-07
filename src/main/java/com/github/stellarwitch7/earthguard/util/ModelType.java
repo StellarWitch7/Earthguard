@@ -22,4 +22,5 @@ public class ModelType {
 	public static final ModelType BLOCK = new ModelType("block", "block/");
 	public static final ModelType ITEM = new ModelType("item", "item/");
 	public static final ModelType ARMOUR = new ModelType("armour", "armour/");
+	public static final ModelType PROJECTILE = new ModelType("projectile", "entity/projectile/");
 }

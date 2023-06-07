@@ -174,6 +174,15 @@ public class ModRegistry {
 		return entityType;
 	}
 	
+	public static EntityType createEntity(String name, EntityType entityType) {
+		var newEntity = new RegistrableEntity();
+		newEntity.name = name;
+		newEntity.id = name.toLowerCase(Locale.ROOT).replace(" ", "_");
+		newEntity.entity = entityType;
+		registryEntities.add(newEntity);
+		return entityType;
+	}
+	
 	public static Item createItem(String name, Model model, boolean isBlock, Item item) {
 		var newItem = new RegistrableItem();
 		newItem.name = name;

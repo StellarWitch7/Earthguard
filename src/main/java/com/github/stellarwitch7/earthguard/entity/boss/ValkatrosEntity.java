@@ -1,6 +1,8 @@
 package com.github.stellarwitch7.earthguard.entity.boss;
 
 import com.github.stellarwitch7.earthguard.EarthguardMod;
+import com.github.stellarwitch7.earthguard.entity.projectile.ChaosProjectile;
+import com.github.stellarwitch7.earthguard.registry.ModEntities;
 import com.github.stellarwitch7.earthguard.util.BossPhase;
 import com.github.stellarwitch7.earthguard.util.SpecialValues;
 import com.mojang.serialization.DataResult;
@@ -43,6 +45,7 @@ Lightning, explosive projectiles
 */
 
 public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, IAnimatable {
+	private final AnimationFactory factory = new AnimationFactory(this);
 	private final ServerBossBar bossBar;
 	private final double specialAttackDistance = 0.8d;
 	private final double dashDistance = 20.0d;
@@ -51,7 +54,6 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 	private final float dashDamage = 10.0f;
 	private final double dashSpeed = 1.8d;
 	private final int lightningDelay = SpecialValues.TICK_SECOND * 3;
-	private AnimationFactory factory = new AnimationFactory(this);
 	private BossPhase bossPhase = BossPhase.ONE;
 	private boolean approachTarget = false;
 	private boolean transitioning = false;
@@ -98,6 +100,8 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 	
 	private void attackSelector(LivingEntity target) {
 		Random random = new Random();
+		
+		bossPhase = BossPhase.TWO; //Testing
 		
 		if (bossPhase == BossPhase.ONE) {
 			if (dashCooldownLeft <= 0
@@ -149,7 +153,10 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 	}
 	
 	private void launchChaosProjectile(LivingEntity target) {
-	
+		var newProjectile = new ChaosProjectile(ModEntities.CHAOS_PROJECTILE, world)
+				.setValues(target.getPos().subtract(this.getPos()).normalize(), 1.5d);
+		newProjectile.setPosition(this.getPos());
+		world.spawnEntity(newProjectile);
 	}
 	
 	private void callLightning(LivingEntity target) {
@@ -168,8 +175,7 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 		if (lightningTimer > 0) {
 			lightningTimer--;
 		} else {
-			World world = this.getWorld();
-			LightningEntity lightningBolt = new LightningEntity(EntityType.LIGHTNING_BOLT, world);
+			var lightningBolt = new LightningEntity(EntityType.LIGHTNING_BOLT, world);
 			lightningBolt.setPosition(targetPos);
 			world.spawnEntity(lightningBolt);
 			

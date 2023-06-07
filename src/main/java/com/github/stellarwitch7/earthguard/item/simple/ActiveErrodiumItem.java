@@ -25,7 +25,7 @@ public class ActiveErrodiumItem extends ModItem implements IExplosiveItem, IIrra
 	
 	@Override
 	public float getExplosiveStrength() {
-		return 20;
+		return 20.0f;
 	}
 	
 	@Override
