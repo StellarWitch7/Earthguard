@@ -102,7 +102,7 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 	private void attackSelector(LivingEntity target) {
 		Random random = new Random();
 		
-		bossPhase = BossPhase.TWO; //TODO testing
+		bossPhase = BossPhase.TWO; //TODO testing, remove soon
 		
 		if (bossPhase == BossPhase.ONE) {
 			if (dashCooldownLeft <= 0
