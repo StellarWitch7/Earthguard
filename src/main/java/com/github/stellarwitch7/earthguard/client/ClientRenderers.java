@@ -5,6 +5,7 @@ import com.github.stellarwitch7.earthguard.client.entity.WildLycanEntityRenderer
 import com.github.stellarwitch7.earthguard.client.entity.armour.AvrilliumArmourRenderer;
 import com.github.stellarwitch7.earthguard.client.entity.armour.BonemailArmourRenderer;
 import com.github.stellarwitch7.earthguard.client.entity.armour.SteelArmourRenderer;
+import com.github.stellarwitch7.earthguard.client.entity.boss.ValkatrosEntityRenderer;
 import com.github.stellarwitch7.earthguard.client.item.ErrodiumReactorBlockItemRenderer;
 import com.github.stellarwitch7.earthguard.registry.ModBlockEntities;
 import com.github.stellarwitch7.earthguard.registry.ModEntities;
@@ -27,6 +28,7 @@ public class ClientRenderers {
 		
 		//Create new entity renderers here
 		EntityRendererRegistry.register(ModEntities.WILD_LYCAN, WildLycanEntityRenderer::new);
+		EntityRendererRegistry.register(ModEntities.VALKATROS, ValkatrosEntityRenderer::new);
 		
 		//Create new armour renderers here
 		GeoArmorRenderer.registerArmorRenderer(new BonemailArmourRenderer(),

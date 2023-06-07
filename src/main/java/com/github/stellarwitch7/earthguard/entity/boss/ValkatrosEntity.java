@@ -10,6 +10,8 @@ import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.RangedAttackMob;
 import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.attribute.DefaultAttributeContainer;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.boss.BossBar;
 import net.minecraft.entity.boss.ServerBossBar;
 import net.minecraft.entity.damage.DamageSource;
@@ -42,10 +44,12 @@ Lightning, explosive projectiles
 
 public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, IAnimatable {
 	private final ServerBossBar bossBar;
+	private final double specialAttackDistance = 0.8d;
 	private final double dashDistance = 20.0d;
-	private final int dashLength = (int)(SpecialValues.TICK_SECOND * 2.5);
+	private final int dashLength = (int)(SpecialValues.TICK_SECOND * 1.5);
+	private final int dashCooldown = SpecialValues.TICK_SECOND * 15;
 	private final float dashDamage = 10.0f;
-	private final double dashSpeed = 2.0d;
+	private final double dashSpeed = 1.8d;
 	private final int lightningDelay = SpecialValues.TICK_SECOND * 3;
 	private AnimationFactory factory = new AnimationFactory(this);
 	private BossPhase bossPhase = BossPhase.ONE;
@@ -53,7 +57,9 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 	private boolean transitioning = false;
 	private boolean isDashing = false;
 	private int dashTimer = 0;
+	private int dashCooldownLeft = 0;
 	private LivingEntity dashTarget;
+	private Vec3d dashVector;
 	private boolean callingLightning = false;
 	private int lightningTimer = 0;
 	private Vec3d lightningTargetPos;
@@ -65,7 +71,15 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 				BossBar.Style.PROGRESS);
 	}
 	
-	
+	public static DefaultAttributeContainer.Builder setAttributes() {
+		return HostileEntity.createMobAttributes()
+				.add(EntityAttributes.GENERIC_MAX_HEALTH, 32.0D)
+				.add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 8.0f)
+				.add(EntityAttributes.GENERIC_ATTACK_SPEED, 3.0f)
+				.add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.4f)
+				.add(EntityAttributes.GENERIC_ARMOR_TOUGHNESS, 3.0f)
+				.add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 3.0f);
+	}
 	
 	@Override
 	public void initGoals() {
@@ -86,10 +100,14 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 		Random random = new Random();
 		
 		if (bossPhase == BossPhase.ONE) {
-			if (dashDistance > this.getPos().distanceTo(target.getPos())) {
+			if (dashCooldownLeft <= 0
+					&& dashDistance > this.getPos().distanceTo(target.getPos())) {
 				this.dashAttack(target);
-			} else {
+				dashCooldownLeft = dashCooldown;
+			} else if (dashDistance < this.getPos().distanceTo(target.getPos())) {
 				approachTarget = true;
+			} else {
+			
 			}
 		} else if (bossPhase == BossPhase.TWO) {
 			if (random.nextBoolean()) {
@@ -103,6 +121,10 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 	private void dashAttack(LivingEntity target) {
 		dashTarget = target;
 		dashTimer = dashLength;
+		dashVector = target.getPos()
+				.subtract(this.getPos())
+				.normalize()
+				.multiply(dashSpeed);
 		isDashing = true;
 	}
 	
@@ -113,12 +135,16 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 			return false;
 		}
 		
-		if (this.collidesWith(target)) {
+		if (target.getPos().subtract(this.getPos()).length() < specialAttackDistance) {
 			target.damage(DamageSource.CRAMMING, dashDamage);
+			this.setVelocity(target.getPos()
+					.subtract(this.getPos())
+					.normalize()
+					.multiply(dashSpeed * -0.5));
 			return false;
 		}
 		
-		this.setVelocity(this.getPos().subtract(target.getPos()).normalize().multiply(dashSpeed));
+		this.setVelocity(dashVector);
 		return true;
 	}
 	
@@ -162,6 +188,8 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 			isDashing = dashLogic(dashTarget);
 		}
 		
+		dashCooldownLeft--;
+		
 		if (callingLightning) {
 			callingLightning = lightningLogic(lightningTargetPos);
 		}
@@ -182,9 +210,11 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 	public void readCustomDataFromNbt(NbtCompound nbt) {
 		super.readCustomDataFromNbt(nbt);
 		
-		NbtElement element = nbt.get("bossPhase");
-		DataResult<BossPhase> value = BossPhase.CODEC.parse(NbtOps.INSTANCE, element);
-		bossPhase = value.resultOrPartial(EarthguardMod.LOGGER::error).orElseThrow();
+		if (nbt.contains("bossPhase")) {
+			NbtElement element = nbt.get("bossPhase");
+			DataResult<BossPhase> value = BossPhase.CODEC.parse(NbtOps.INSTANCE, element);
+			bossPhase = value.resultOrPartial(EarthguardMod.LOGGER::error).orElseThrow();
+		}
 	}
 	
 	@Override
