@@ -5,19 +5,19 @@ import net.minecraft.util.Identifier;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 
-public class EarthguardModel<T extends IAnimatable> extends AnimatedGeoModel<T> {
+public class GeckoModel<T extends IAnimatable> extends AnimatedGeoModel<T> {
 	private final boolean noAnimation;
 	private final String id;
 	private final ModelType modelType;
 	
-	public EarthguardModel(String id, ModelType modelType) {
+	public GeckoModel(String id, ModelType modelType) {
 		super();
 		this.noAnimation = false;
 		this.id = id;
 		this.modelType = modelType;
 	}
 	
-	public EarthguardModel(String id, ModelType modelType, boolean hasNoAnimation) {
+	public GeckoModel(String id, ModelType modelType, boolean hasNoAnimation) {
 		super();
 		this.noAnimation = hasNoAnimation;
 		this.id = id;
