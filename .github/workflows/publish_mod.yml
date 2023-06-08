@@ -5,8 +5,8 @@ on: [ pull_request, workflow_dispatch ]
 env:
   MINECRAFT_VERSION: 1.19.2
   JAVA_VERSION: 17
-  VERSION: v1.1.0+1.19.2
-  RELEASE_NAME: Earthguard Mod for Minecraft 1.19.2
+  VERSION: v1.1.0+${{ env.MINECRAFT_VERSION }}
+  RELEASE_NAME: Earthguard ${{ env.VERSION }}
   MODRINTH_TOKEN: ${{ secrets.PUBLISH_MODRINTH_TOKEN }}
   CURSEFORGE_TOKEN: ${{ secrets.PUBLISH_CURSEFORGE_TOKEN }}
   GITHUB_TOKEN: ${{ secrets.PUBLISH_GITHUB_TOKEN }}
