@@ -40,11 +40,11 @@ public class ChaosProjectile
 	
 	@Override
 	public void tick() {
-		super.tick();
-		
-		if (this.getVelocity().length() < targetMovement.length() / 2) {
+		if (this.getVelocity().length() < targetMovement.length() * 0.8) {
 			this.setVelocity(targetMovement);
 		}
+		
+		super.tick();
 	}
 	
 	@Override
