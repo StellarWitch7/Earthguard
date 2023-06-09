@@ -11,18 +11,25 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.RangedAttackMob;
+import net.minecraft.entity.ai.control.FlightMoveControl;
+import net.minecraft.entity.ai.control.MoveControl;
 import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.ai.pathing.BirdNavigation;
+import net.minecraft.entity.ai.pathing.EntityNavigation;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.boss.BossBar;
 import net.minecraft.entity.boss.ServerBossBar;
+import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -46,8 +53,11 @@ Lightning, explosive projectiles
 
 public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, IAnimatable {
 	private final AnimationFactory factory = new AnimationFactory(this);
-	private final ServerBossBar bossBar;
+	private final ServerBossBar bossBar = new ServerBossBar(this.getDisplayName(),
+			BossBar.Color.RED,
+			BossBar.Style.PROGRESS);
 	private final double specialAttackDistance = 0.8d;
+	private final float transitionThreshold = this.getMaxHealth() / 10;
 	private final double dashDistance = 20.0d;
 	private final int dashLength = (int)(SpecialValues.TICK_SECOND * 1.5);
 	private final int dashCooldown = SpecialValues.TICK_SECOND * 15;
@@ -55,6 +65,8 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 	private final double dashSpeed = 1.8d;
 	private final int lightningDelay = SpecialValues.TICK_SECOND * 3;
 	private final double chaosProjectileSpeed = 1.5d;
+	private final MoveControl phaseOneControl;
+	private final MoveControl phaseTwoControl;
 	private BossPhase bossPhase = BossPhase.ONE;
 	private boolean approachTarget = false;
 	private boolean transitioning = false;
@@ -69,9 +81,23 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 	
 	public ValkatrosEntity(EntityType<? extends HostileEntity> entityType, World world) {
 		super(entityType, world);
-		this.bossBar = new ServerBossBar(this.getDisplayName(),
-				BossBar.Color.RED,
-				BossBar.Style.PROGRESS);
+		this.phaseOneControl = this.moveControl;
+		this.phaseTwoControl = new FlightMoveControl(this, 10, true);
+		this.setHealth(this.getMaxHealth());
+	}
+	
+	@Override
+	protected EntityNavigation createNavigation(World world) {
+		BirdNavigation birdNavigation = new BirdNavigation(this, world);
+		birdNavigation.setCanPathThroughDoors(false);
+		birdNavigation.setCanSwim(true);
+		birdNavigation.setCanEnterOpenDoors(true);
+		
+		if (bossPhase == BossPhase.TWO) {
+			return birdNavigation;
+		}
+		
+		return super.createNavigation(world);
 	}
 	
 	public static DefaultAttributeContainer.Builder setAttributes() {
@@ -81,7 +107,8 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 				.add(EntityAttributes.GENERIC_ATTACK_SPEED, 3.0f)
 				.add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.4f)
 				.add(EntityAttributes.GENERIC_ARMOR_TOUGHNESS, 3.0f)
-				.add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 3.0f);
+				.add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 3.0f)
+				.add(EntityAttributes.GENERIC_FLYING_SPEED, 0.5f);
 	}
 	
 	@Override
@@ -101,8 +128,6 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 	
 	private void attackSelector(LivingEntity target) {
 		Random random = new Random();
-		
-		bossPhase = BossPhase.TWO; //TODO testing, remove soon
 		
 		if (bossPhase == BossPhase.ONE) {
 			if (dashCooldownLeft <= 0
@@ -193,17 +218,84 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 	@Override
 	public void tick() {
 		super.tick();
-		bossBar.setPercent(this.getHealth());
+		
+		if (transitioning) {
+			transitioning = transitionLogic();
+		}
 		
 		if (isDashing) {
 			isDashing = dashLogic(dashTarget);
 		}
 		
-		dashCooldownLeft--;
-		
 		if (callingLightning) {
 			callingLightning = lightningLogic(lightningTargetPos);
 		}
+		
+		if (bossBar != null && !this.world.isClient()) {
+			bossBar.setPercent(this.getHealth() / this.getMaxHealth());
+		}
+		
+		if (this.bossPhase == BossPhase.ONE && this.getHealth() < transitionThreshold) {
+			startTransition();
+		}
+		
+		dashCooldownLeft--;
+	}
+	
+	@Override
+	public boolean damage(DamageSource source, float amount) {
+		var attacker = source.getAttacker();
+		
+		if (this.isInvulnerableTo(source)) {
+			return false;
+		}
+		if (attacker instanceof ValkatrosEntity) {
+			return false;
+		}
+		if (source == DamageSource.explosion((LivingEntity)null)) {
+			return false;
+		}
+		if (source == DamageSource.DROWN
+				|| source == DamageSource.WITHER
+				|| source == DamageSource.LIGHTNING_BOLT) {
+			return false;
+		}
+		
+		if (bossPhase == BossPhase.ONE && this.getHealth() - amount < transitionThreshold) {
+			startTransition();
+			return false;
+		}
+		
+		return super.damage(source, amount);
+	}
+	
+	public void startTransition() {
+		transitioning = true;
+		bossPhase = BossPhase.TWO;
+		this.moveControl = phaseTwoControl;
+		this.navigation = this.createNavigation(world);
+	}
+	
+	public boolean transitionLogic() {
+		this.heal(1.0f);
+		
+		if (this.getHealth() >= this.getMaxHealth()) {
+			return false;
+		}
+		
+		return true;
+	}
+	
+	@Override
+	public void onStartedTrackingBy(ServerPlayerEntity player) {
+		super.onStartedTrackingBy(player);
+		this.bossBar.addPlayer(player);
+	}
+	
+	@Override
+	public void onStoppedTrackingBy(ServerPlayerEntity player) {
+		super.onStoppedTrackingBy(player);
+		this.bossBar.removePlayer(player);
 	}
 	
 	@Override
