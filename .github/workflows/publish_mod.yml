@@ -5,8 +5,8 @@ on: [ pull_request, workflow_dispatch ]
 env:
   MINECRAFT_VERSION: 1.19.2
   JAVA_VERSION: 17
-  VERSION: indev-1.0+${{ env.MINECRAFT_VERSION }}
-  RELEASE_NAME: Earthguard v${{ env.VERSION }}
+  VERSION: indev-1.0
+  RELEASE_NAME: Earthguard
   MODRINTH_TOKEN: ${{ secrets.PUBLISH_MODRINTH_TOKEN }}
   CURSEFORGE_TOKEN: ${{ secrets.PUBLISH_CURSEFORGE_TOKEN }}
   GITHUB_TOKEN: ${{ secrets.PUBLISH_GITHUB_TOKEN }}
@@ -51,8 +51,8 @@ jobs:
           #github-tag: "v${{env.VERSION}}"
           #github-token: "${{env.GITHUB_TOKEN}}"
 
-          name: "${{env.RELEASE_NAME}}"
-          version: "${{env.VERSION}}"
+          name: "${{env.RELEASE_NAME}} v${{ env.VERSION }}+${{ env.MINECRAFT_VERSION }}"
+          version: "v${{env.VERSION}}+${{ env.MINECRAFT_VERSION }}"
           version-type: release
           changelog-file: CHANGELOG.md
 
