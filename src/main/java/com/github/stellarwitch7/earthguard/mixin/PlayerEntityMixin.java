@@ -73,7 +73,7 @@ public abstract class PlayerEntityMixin
 		}
 	}
 	
-	@Inject(method = "tick", at = @At("HEAD"))
+	@Inject(method = "tick", at = @At("TAIL"))
 	private void earthguard$tick(CallbackInfo info) {
 		if (this.isAlive()) {
 			if (this.hasStatusEffect(ModEffects.FURGUARD)) {
