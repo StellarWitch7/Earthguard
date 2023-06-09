@@ -166,7 +166,7 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 		}
 		
 		if (target.getPos().subtract(this.getPos()).length() < specialAttackDistance) {
-			target.damage(DamageSource.CRAMMING, dashDamage);
+			target.damage(DamageSource.GENERIC, dashDamage);
 			this.setVelocity(target.getPos()
 					.subtract(this.getPos())
 					.normalize()
@@ -252,7 +252,7 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 		if (attacker instanceof ValkatrosEntity) {
 			return false;
 		}
-		if (source == DamageSource.explosion((LivingEntity)null)) {
+		if (source.isExplosive()) {
 			return false;
 		}
 		if (source == DamageSource.DROWN

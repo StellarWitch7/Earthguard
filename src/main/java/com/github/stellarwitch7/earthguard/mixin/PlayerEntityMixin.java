@@ -18,11 +18,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
+import net.minecraft.world.event.GameEvent;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Objects;
 
@@ -31,6 +34,12 @@ import java.util.Objects;
 public abstract class PlayerEntityMixin
 		extends LivingEntity
 		implements IPlayerEntityAccessor {
+	@Shadow
+	public abstract ItemStack getEquippedStack(EquipmentSlot slot);
+	
+	@Shadow
+	public abstract HungerManager getHungerManager();
+	
 	@Unique
 	private boolean isLycan = false;
 	@Unique
@@ -51,15 +60,15 @@ public abstract class PlayerEntityMixin
 		super(entityType, world);
 	}
 	
-	@Inject(method = "applyDamage", at = @At("HEAD"), cancellable = true)
+	@Inject(method = "damage", at = @At("HEAD"), cancellable = true)
 	private void earthguard$blockDamage(DamageSource source, float amount,
-										CallbackInfo info) {
+										CallbackInfoReturnable<Boolean> cir) {
 		if (this.hasStatusEffect(ModEffects.FURGUARD)) {
 			if (!source.bypassesArmor() && !source.isFire()
 					&& !source.isFromFalling() && !source.isMagic()) {
 				blockedDamage += amount / this.getStatusEffect(ModEffects.FURGUARD)
 						.getAmplifier();
-				info.cancel();
+				cir.setReturnValue(false);
 			}
 		}
 	}
@@ -71,16 +80,16 @@ public abstract class PlayerEntityMixin
 				ticksPassedSinceLastDrain += (blockedDamage + 2) / 2;
 				
 				if (ticksPassedSinceLastDrain >= ticksBetweenDrains) {
-					this.applyDamage(DamageSource.MAGIC,
+					this.damage(DamageSource.MAGIC,
 							blockedDamage - (blockedDamage - 1));
 					blockedDamage = blockedDamage < 1 ? 0 : blockedDamage - 1;
 					ticksPassedSinceLastDrain = 0;
 				}
 			} else {
 				if (blockedDamage > this.getHealth()) {
-					this.applyDamage(DamageSource.MAGIC, this.getHealth() - 1);
+					this.damage(DamageSource.MAGIC, this.getHealth() - 1);
 				} else {
-					this.applyDamage(DamageSource.MAGIC, blockedDamage);
+					this.damage(DamageSource.MAGIC, blockedDamage);
 				}
 				
 				blockedDamage = 0;
@@ -199,11 +208,4 @@ public abstract class PlayerEntityMixin
 	public void earthguard$setMonsterFormTime(int ticks) {
 		ticksPassedAsMonster = ticks;
 	}
-	
-	@Shadow
-	protected abstract void applyDamage(DamageSource source, float amount);
-	@Shadow
-	public abstract ItemStack getEquippedStack(EquipmentSlot slot);
-	@Shadow
-	public abstract HungerManager getHungerManager();
 }
