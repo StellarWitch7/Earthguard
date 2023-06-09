@@ -33,7 +33,7 @@ public class FurguardStatusEffect extends StatusEffect {
 			if (ticksPassedSinceLastDrain >= ticksBetweenDrains
 					&& accessor.earthguard$getBlockedDamage() > 0) {
 				entity.playSound(SoundEvents.ENTITY_CAT_HISS, 1.0f, 1.0f);
-				player.damage(DamageSource.MAGIC, 1.0f);
+				accessor.earthguard$decrementHealth();
 				accessor.earthguard$decrementBlockedDamage();
 				ticksPassedSinceLastDrain = 0;
 			}

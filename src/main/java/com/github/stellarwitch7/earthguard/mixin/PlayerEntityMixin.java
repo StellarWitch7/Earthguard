@@ -122,6 +122,10 @@ public abstract class PlayerEntityMixin
 				+ lycanForm.getId()); //Debug
 	}
 	
+	public void earthguard$decrementHealth() {
+		this.setHealth(this.getHealth() - 1.0f);
+	}
+	
 	@Override
 	public float earthguard$getBlockedDamage() {
 		return blockedDamage;

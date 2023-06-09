@@ -8,6 +8,6 @@ import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
 public class ValkatrosEntityRenderer extends GeoEntityRenderer<ValkatrosEntity> {
 	public ValkatrosEntityRenderer(EntityRendererFactory.Context ctx) {
-		super(ctx, new GeckoModel<>("valkatros", ModelType.ENTITY));
+		super(ctx, new GeckoModel<>("valkatros", ModelType.BOSS));
 	}
 }

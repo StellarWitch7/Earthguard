@@ -5,6 +5,7 @@ import com.github.stellarwitch7.earthguard.util.IExplosiveProjectile;
 import com.github.stellarwitch7.earthguard.util.SpecialValues;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ExplosiveProjectileEntity;
@@ -23,24 +24,42 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
+import java.util.Random;
+
 public class ChaosProjectile
 		extends ExplosiveProjectileEntity
 		implements IAnimatable, IExplosiveProjectile {
 	private final AnimationFactory factory = new AnimationFactory(this);
 	private Vec3d targetMovement = this.getPos();
+	private boolean isCharged = false;
 	
 	public ChaosProjectile(EntityType<? extends ExplosiveProjectileEntity> entityType,
 						   World world) {
 		super(entityType, world);
+		
+		Random rand = new Random();
+		
+		if (rand.nextInt(0, 100) < 10) {
+			this.isCharged = true;
+		}
 	}
 	
 	public void setTargetMovement(Vec3d vector) {
 		this.targetMovement = vector;
 	}
 	
+	private void summonLightning() {
+		if (isCharged) {
+			var bolt = new LightningEntity(EntityType.LIGHTNING_BOLT, world);
+			bolt.setPosition(this.getPos());
+			world.spawnEntity(bolt);
+		}
+	}
+	
 	@Override
 	public void tick() {
-		if (this.getVelocity().length() < targetMovement.length() * 0.8) {
+		if (this.getVelocity().length() < targetMovement.length() * 0.7) {
+			this.summonLightning();
 			this.setVelocity(targetMovement);
 		}
 		
@@ -54,7 +73,11 @@ public class ChaosProjectile
 	
 	@Override
 	public Explosion.DestructionType getDestructionType() {
-		return Explosion.DestructionType.DESTROY;
+		if (isCharged) {
+			return Explosion.DestructionType.DESTROY;
+		}
+		
+		return Explosion.DestructionType.NONE;
 	}
 	
 	@Override
@@ -73,6 +96,7 @@ public class ChaosProjectile
 					SpecialValues.TICK_SECOND * 5));
 		}
 		
+		this.summonLightning();
 		IExplosiveProjectile.super.explode(this);
 		this.kill();
 	}
@@ -82,6 +106,7 @@ public class ChaosProjectile
 		super.onCollision(hitResult);
 		
 		if (!this.world.isClient) {
+			this.summonLightning();
 			IExplosiveProjectile.super.explode(this);
 			this.kill();
 		}

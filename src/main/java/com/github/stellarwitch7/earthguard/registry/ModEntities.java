@@ -1,5 +1,6 @@
 package com.github.stellarwitch7.earthguard.registry;
 
+import com.github.stellarwitch7.earthguard.entity.SeekerEntity;
 import com.github.stellarwitch7.earthguard.entity.WildLycanEntity;
 import com.github.stellarwitch7.earthguard.entity.boss.ValkatrosEntity;
 import com.github.stellarwitch7.earthguard.entity.projectile.ChaosProjectile;
@@ -17,11 +18,18 @@ public class ModEntities {
 					WildLycanEntity.setAttributes());
 	public static final EntityType VALKATROS =
 			ModRegistry.createEntity("Valkatros",
-					FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, ValkatrosEntity::new)
+					FabricEntityTypeBuilder.create(SpawnGroup.MISC, ValkatrosEntity::new)
 							.dimensions(EntityDimensions.fixed(1f, 1.5f))
 							.fireImmune()
 							.build(),
 					ValkatrosEntity.setAttributes());
+	public static final EntityType SEEKER =
+			ModRegistry.createEntity("Seeker",
+					FabricEntityTypeBuilder.create(SpawnGroup.MISC, SeekerEntity::new)
+							.dimensions(EntityDimensions.fixed(1.0f, 1.0f))
+							.fireImmune()
+							.build(),
+					SeekerEntity.setAttributes());
 	public static final EntityType CHAOS_PROJECTILE =
 			ModRegistry.createEntity("Chaos Projectile",
 					FabricEntityTypeBuilder.create(SpawnGroup.MISC, ChaosProjectile::new)

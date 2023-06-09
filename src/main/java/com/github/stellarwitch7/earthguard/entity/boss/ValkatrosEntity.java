@@ -1,6 +1,7 @@
 package com.github.stellarwitch7.earthguard.entity.boss;
 
 import com.github.stellarwitch7.earthguard.EarthguardMod;
+import com.github.stellarwitch7.earthguard.entity.SeekerEntity;
 import com.github.stellarwitch7.earthguard.entity.projectile.ChaosProjectile;
 import com.github.stellarwitch7.earthguard.registry.ModEntities;
 import com.github.stellarwitch7.earthguard.util.BossPhase;
@@ -11,6 +12,8 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.RangedAttackMob;
+import net.minecraft.entity.ai.brain.WalkTarget;
+import net.minecraft.entity.ai.brain.task.WalkTask;
 import net.minecraft.entity.ai.control.FlightMoveControl;
 import net.minecraft.entity.ai.control.MoveControl;
 import net.minecraft.entity.ai.goal.*;
@@ -24,6 +27,7 @@ import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.mob.HostileEntity;
+import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -32,6 +36,7 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraft.world.explosion.Explosion;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -42,6 +47,7 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 /*
 Valkatros, deity of death and destruction.
@@ -57,11 +63,13 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 			BossBar.Color.RED,
 			BossBar.Style.PROGRESS);
 	private final double specialAttackDistance = 0.8d;
-	private final float transitionThreshold = this.getMaxHealth() / 10;
+	private final double targetDistance = 20.0d;
+	private final float transitionThreshold = this.getMaxHealth() / 6;
+	private final int summonCooldown = SpecialValues.TICK_SECOND * 30;
+	private final int seekerSpawnCount = 12;
 	private final double dashDistance = 20.0d;
 	private final int dashLength = (int)(SpecialValues.TICK_SECOND * 1.5);
 	private final int dashCooldown = SpecialValues.TICK_SECOND * 15;
-	private final float dashDamage = 10.0f;
 	private final double dashSpeed = 1.8d;
 	private final int lightningDelay = SpecialValues.TICK_SECOND * 3;
 	private final double chaosProjectileSpeed = 1.5d;
@@ -71,19 +79,19 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 	private boolean approachTarget = false;
 	private boolean transitioning = false;
 	private boolean isDashing = false;
-	private int dashTimer = 0;
-	private int dashCooldownLeft = 0;
+	private int dashTimer;
+	private int dashCooldownLeft;
 	private LivingEntity dashTarget;
 	private Vec3d dashVector;
 	private boolean callingLightning = false;
-	private int lightningTimer = 0;
+	private int lightningTimer;
 	private Vec3d lightningTargetPos;
+	private int summonCooldownLeft;
 	
 	public ValkatrosEntity(EntityType<? extends HostileEntity> entityType, World world) {
 		super(entityType, world);
 		this.phaseOneControl = this.moveControl;
 		this.phaseTwoControl = new FlightMoveControl(this, 10, true);
-		this.setHealth(this.getMaxHealth());
 	}
 	
 	@Override
@@ -102,23 +110,25 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 	
 	public static DefaultAttributeContainer.Builder setAttributes() {
 		return HostileEntity.createMobAttributes()
-				.add(EntityAttributes.GENERIC_MAX_HEALTH, 32.0D)
-				.add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 8.0f)
-				.add(EntityAttributes.GENERIC_ATTACK_SPEED, 3.0f)
-				.add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.4f)
-				.add(EntityAttributes.GENERIC_ARMOR_TOUGHNESS, 3.0f)
-				.add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 3.0f)
-				.add(EntityAttributes.GENERIC_FLYING_SPEED, 0.5f);
+				.add(EntityAttributes.GENERIC_MAX_HEALTH, 640.0D)
+				.add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 16.0f)
+				.add(EntityAttributes.GENERIC_ATTACK_SPEED, 3.5f)
+				.add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.7f)
+				.add(EntityAttributes.GENERIC_ARMOR_TOUGHNESS, 4.0f)
+				.add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 3.5f)
+				.add(EntityAttributes.GENERIC_FLYING_SPEED, 1.0f)
+				.add(EntityAttributes.GENERIC_FOLLOW_RANGE, 40.0f)
+				.add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, SpecialValues.BIG_FLOAT);
 	}
 	
 	@Override
 	public void initGoals() {
-		this.goalSelector.add(2, new ProjectileAttackGoal(this, 1.0, 40, 20.0f));
-		this.goalSelector.add(5, new FlyGoal(this, 1.0));
-		this.goalSelector.add(6, new LookAtEntityGoal(this, PlayerEntity.class, 8.0f));
-		this.goalSelector.add(7, new LookAroundGoal(this));
+		this.goalSelector.add(1, new ProjectileAttackGoal(this, 3.0d, 20, 16.0f));
+		this.goalSelector.add(2, new FlyGoal(this, 1.5d));
+		this.goalSelector.add(3, new LookAtEntityGoal(this, PlayerEntity.class, 16.0f));
+		this.goalSelector.add(4, new LookAroundGoal(this));
 		
-		this.targetSelector.add(2, new ActiveTargetGoal<>(this, LivingEntity.class, true));
+		this.targetSelector.add(1, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
 	}
 	
 	@Override
@@ -127,25 +137,60 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 	}
 	
 	private void attackSelector(LivingEntity target) {
-		Random random = new Random();
-		
 		if (bossPhase == BossPhase.ONE) {
 			if (dashCooldownLeft <= 0
 					&& dashDistance > this.getPos().distanceTo(target.getPos())) {
 				this.dashAttack(target);
 				dashCooldownLeft = dashCooldown;
-			} else if (dashDistance < this.getPos().distanceTo(target.getPos())) {
-				approachTarget = true;
 			} else {
 			
 			}
 		} else if (bossPhase == BossPhase.TWO) {
-			if (random.nextBoolean()) {
-				this.launchChaosProjectile(target);
-			} else {
+			if (!callingLightning) {
 				this.callLightning(target);
+			} else if (random.nextBoolean()) {
+				this.launchChaosProjectile(target);
+			} else if (summonCooldownLeft <= 0) {
+				this.summonSeekers();
+				summonCooldownLeft = summonCooldown;
 			}
 		}
+	}
+	
+	private void summonSeekers() {
+		for (int i = 0; i < seekerSpawnCount * 2; i++) {
+			var rand = ThreadLocalRandom.current();
+			final int max = 16;
+			final int min = max * -1;
+			var bolt = new LightningEntity(EntityType.LIGHTNING_BOLT, world);
+			Vec3d vector = new Vec3d(rand.nextDouble(this.getPos().x + min,
+					this.getPos().x + max + 1), rand.nextDouble(this.getPos().y + min,
+					this.getPos().y + max + 1), rand.nextDouble(this.getPos().z + min,
+					this.getPos().z + max + 1));
+			bolt.setPosition(vector);
+			world.spawnEntity(bolt);
+		}
+		
+		for (int i = 0; i < seekerSpawnCount; i++) {
+			var rand = ThreadLocalRandom.current();
+			final int max = 12;
+			final int min = max * -1;
+			var newSeeker = new SeekerEntity(ModEntities.SEEKER, world);
+			Vec3d vector = new Vec3d(rand.nextDouble(this.getPos().x + min,
+					this.getPos().x + max + 1), rand.nextDouble(this.getPos().y + min,
+					this.getPos().y + max + 1), rand.nextDouble(this.getPos().z + min,
+					this.getPos().z + max + 1));
+			newSeeker.setPosition(vector);
+			world.spawnEntity(newSeeker);
+		}
+	}
+	
+	private void detonate(float strength) {
+		world.createExplosion(this,
+				this.getX(),
+				this.getY(),
+				this.getZ(),
+				strength, Explosion.DestructionType.DESTROY);
 	}
 	
 	private void dashAttack(LivingEntity target) {
@@ -180,7 +225,14 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 	
 	private void launchChaosProjectile(LivingEntity target) {
 		var newProjectile = new ChaosProjectile(ModEntities.CHAOS_PROJECTILE, world);
-		Vec3d vector = this.getPos().add(0.0d, 3.0d, 0.0d);
+		Vec3d vector = this.getPos();
+		
+		if (target.getPos().y <= this.getPos().y) {
+			vector = vector.subtract(0.0d, 3.0d, 0.0d);
+		} else {
+			vector = vector.add(0.0d, 3.0d, 0.0d);
+		}
+		
 		newProjectile.setPosition(vector);
 		newProjectile.setTargetMovement(target.getPos()
 				.subtract(vector)
@@ -193,7 +245,7 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 		/*
 		Add logic here to summon an entity at the position of the target
 		that will simply be a marker to let player's know where the next strike
-		will be.
+		will be. //TODO lightning stuff
 		*/
 		
 		lightningTargetPos = target.getPos();
@@ -205,9 +257,9 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 		if (lightningTimer > 0) {
 			lightningTimer--;
 		} else {
-			var lightningBolt = new LightningEntity(EntityType.LIGHTNING_BOLT, world);
-			lightningBolt.setPosition(targetPos);
-			world.spawnEntity(lightningBolt);
+			var bolt = new LightningEntity(EntityType.LIGHTNING_BOLT, world);
+			bolt.setPosition(targetPos);
+			world.spawnEntity(bolt);
 			
 			return false;
 		}
@@ -240,12 +292,16 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 		}
 		
 		dashCooldownLeft--;
+		summonCooldownLeft--;
 	}
 	
 	@Override
 	public boolean damage(DamageSource source, float amount) {
 		var attacker = source.getAttacker();
 		
+		if (transitioning) {
+			return false;
+		}
 		if (this.isInvulnerableTo(source)) {
 			return false;
 		}
@@ -302,6 +358,8 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 	public void writeCustomDataToNbt(NbtCompound nbt) {
 		super.writeCustomDataToNbt(nbt);
 		
+		nbt.putFloat("health", this.getHealth());
+		
 		DataResult<NbtElement> value =
 				BossPhase.CODEC.encodeStart(NbtOps.INSTANCE,
 						bossPhase);
@@ -312,6 +370,10 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 	@Override
 	public void readCustomDataFromNbt(NbtCompound nbt) {
 		super.readCustomDataFromNbt(nbt);
+		
+		if (nbt.contains("health")) {
+			this.setHealth(nbt.getFloat("health"));
+		}
 		
 		if (nbt.contains("bossPhase")) {
 			NbtElement element = nbt.get("bossPhase");

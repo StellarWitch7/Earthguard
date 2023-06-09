@@ -1,6 +1,7 @@
 package com.github.stellarwitch7.earthguard.client;
 
 import com.github.stellarwitch7.earthguard.client.block.ErrodiumReactorBlockRenderer;
+import com.github.stellarwitch7.earthguard.client.entity.SeekerEntityRenderer;
 import com.github.stellarwitch7.earthguard.client.entity.WildLycanEntityRenderer;
 import com.github.stellarwitch7.earthguard.client.entity.armour.AvrilliumArmourRenderer;
 import com.github.stellarwitch7.earthguard.client.entity.armour.BonemailArmourRenderer;
@@ -16,6 +17,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.render.entity.ProjectileEntityRenderer;
 import software.bernie.geckolib3.renderers.geo.GeoArmorRenderer;
 import software.bernie.geckolib3.renderers.geo.GeoItemRenderer;
+import software.bernie.shadowed.eliotlash.mclib.math.functions.classic.Mod;
 
 public class ClientRenderers {
 	//Call this to load the renderers
@@ -31,6 +33,7 @@ public class ClientRenderers {
 		//Create new entity renderers here
 		EntityRendererRegistry.register(ModEntities.WILD_LYCAN, WildLycanEntityRenderer::new);
 		EntityRendererRegistry.register(ModEntities.VALKATROS, ValkatrosEntityRenderer::new);
+		EntityRendererRegistry.register(ModEntities.SEEKER, SeekerEntityRenderer::new);
 		EntityRendererRegistry.register(ModEntities.CHAOS_PROJECTILE, ChaosProjectileRenderer::new);
 		
 		//Create new armour renderers here
