@@ -48,8 +48,8 @@ jobs:
           #modrinth-id: XDEL2Oex
           #modrinth-token: "${{env.MODRINTH_TOKEN}}"
 
-          github-tag: "v${{env.VERSION}}"
-          github-token: "${{env.GITHUB_TOKEN}}"
+          #github-tag: "v${{env.VERSION}}"
+          #github-token: "${{env.GITHUB_TOKEN}}"
 
           name: "${{env.RELEASE_NAME}}"
           version: "${{env.VERSION}}"
