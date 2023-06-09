@@ -50,25 +50,21 @@ public abstract class PlayerEntityMixin
 	private int monsterFormLength = 16 * SpecialValues.TICK_MINUTE;
 	@Unique
 	private int ticksPassedAsMonster = 0;
-	@Unique
-	private int ticksBetweenDrains = 900;
-	@Unique
-	private int ticksPassedSinceLastDrain = 0;
 	
 	protected PlayerEntityMixin(EntityType<? extends LivingEntity> entityType,
 								World world) {
 		super(entityType, world);
 	}
 	
-	@Inject(method = "damage", at = @At("HEAD"), cancellable = true)
+	@Inject(method = "applyDamage", at = @At("HEAD"), cancellable = true)
 	private void earthguard$blockDamage(DamageSource source, float amount,
-										CallbackInfoReturnable<Boolean> cir) {
+										CallbackInfo ci) {
 		if (this.hasStatusEffect(ModEffects.FURGUARD)) {
 			if (!source.bypassesArmor() && !source.isFire()
 					&& !source.isFromFalling() && !source.isMagic()) {
 				blockedDamage += amount / this.getStatusEffect(ModEffects.FURGUARD)
 						.getAmplifier();
-				cir.setReturnValue(false);
+				ci.cancel();
 			}
 		}
 	}
@@ -76,25 +72,6 @@ public abstract class PlayerEntityMixin
 	@Inject(method = "tick", at = @At("TAIL"))
 	private void earthguard$tick(CallbackInfo info) {
 		if (this.isAlive()) {
-			if (this.hasStatusEffect(ModEffects.FURGUARD)) {
-				ticksPassedSinceLastDrain += (blockedDamage + 2) / 2;
-				
-				if (ticksPassedSinceLastDrain >= ticksBetweenDrains) {
-					this.damage(DamageSource.MAGIC,
-							blockedDamage - (blockedDamage - 1));
-					blockedDamage = blockedDamage < 1 ? 0 : blockedDamage - 1;
-					ticksPassedSinceLastDrain = 0;
-				}
-			} else {
-				if (blockedDamage > this.getHealth()) {
-					this.damage(DamageSource.MAGIC, this.getHealth() - 1);
-				} else {
-					this.damage(DamageSource.MAGIC, blockedDamage);
-				}
-				
-				blockedDamage = 0;
-			}
-			
 			if (Objects.equals(lycanForm.getId(), LycanForm.MONSTER.getId())) {
 				this.addStatusEffect(new StatusEffectInstance(ModEffects.FURGUARD,
 						60, this.getHungerManager().getFoodLevel() / 4));
@@ -106,8 +83,6 @@ public abstract class PlayerEntityMixin
 					earthguard$setLycanForm(LycanForm.HUMAN);
 				}
 			}
-		} else {
-			blockedDamage = 0;
 		}
 	}
 	
@@ -150,6 +125,16 @@ public abstract class PlayerEntityMixin
 	@Override
 	public float earthguard$getBlockedDamage() {
 		return blockedDamage;
+	}
+	
+	@Override
+	public void earthguard$decrementBlockedDamage() {
+		blockedDamage--;
+	}
+	
+	@Override
+	public void earthguard$incrementBlockedDamage() {
+		blockedDamage++;
 	}
 	
 	@Override

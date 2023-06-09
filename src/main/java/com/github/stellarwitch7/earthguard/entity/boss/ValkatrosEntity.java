@@ -166,7 +166,7 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 		}
 		
 		if (target.getPos().subtract(this.getPos()).length() < specialAttackDistance) {
-			target.damage(DamageSource.GENERIC, dashDamage);
+			this.tryAttack(target);
 			this.setVelocity(target.getPos()
 					.subtract(this.getPos())
 					.normalize()
@@ -318,6 +318,8 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 			DataResult<BossPhase> value = BossPhase.CODEC.parse(NbtOps.INSTANCE, element);
 			bossPhase = value.resultOrPartial(EarthguardMod.LOGGER::error).orElseThrow();
 		}
+		
+		this.navigation = createNavigation(world);
 	}
 	
 	@Override
