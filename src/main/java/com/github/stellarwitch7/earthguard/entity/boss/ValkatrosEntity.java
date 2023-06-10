@@ -12,8 +12,6 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.RangedAttackMob;
-import net.minecraft.entity.ai.brain.WalkTarget;
-import net.minecraft.entity.ai.brain.task.WalkTask;
 import net.minecraft.entity.ai.control.FlightMoveControl;
 import net.minecraft.entity.ai.control.MoveControl;
 import net.minecraft.entity.ai.goal.*;
@@ -27,9 +25,7 @@ import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.mob.HostileEntity;
-import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtOps;
@@ -46,7 +42,6 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 /*
@@ -68,7 +63,7 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 	private final int summonCooldown = SpecialValues.TICK_SECOND * 30;
 	private final int seekerSpawnCount = 12;
 	private final double dashDistance = 20.0d;
-	private final int dashLength = (int)(SpecialValues.TICK_SECOND * 1.5);
+	private final int dashLength = (int)(SpecialValues.TICK_SECOND * 0.8);
 	private final int dashCooldown = SpecialValues.TICK_SECOND * 15;
 	private final double dashSpeed = 1.8d;
 	private final int lightningDelay = SpecialValues.TICK_SECOND * 3;
@@ -117,7 +112,7 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 				.add(EntityAttributes.GENERIC_ARMOR_TOUGHNESS, 4.0f)
 				.add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 3.5f)
 				.add(EntityAttributes.GENERIC_FLYING_SPEED, 1.0f)
-				.add(EntityAttributes.GENERIC_FOLLOW_RANGE, 40.0f)
+				.add(EntityAttributes.GENERIC_FOLLOW_RANGE, 50.0f)
 				.add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, SpecialValues.BIG_FLOAT);
 	}
 	
@@ -128,7 +123,7 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 		this.goalSelector.add(3, new LookAtEntityGoal(this, PlayerEntity.class, 16.0f));
 		this.goalSelector.add(4, new LookAroundGoal(this));
 		
-		this.targetSelector.add(1, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
+		this.targetSelector.add(1, new ActiveTargetGoal<>(this, PlayerEntity.class, false));
 	}
 	
 	@Override
@@ -215,7 +210,7 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 			this.setVelocity(target.getPos()
 					.subtract(this.getPos())
 					.normalize()
-					.multiply(dashSpeed * -0.5));
+					.multiply(dashSpeed * -0.3));
 			return false;
 		}
 		
@@ -330,6 +325,7 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 		bossPhase = BossPhase.TWO;
 		this.moveControl = phaseTwoControl;
 		this.navigation = this.createNavigation(world);
+		this.addVelocity(0.0d, 5.0d, 0.0d);
 	}
 	
 	public boolean transitionLogic() {

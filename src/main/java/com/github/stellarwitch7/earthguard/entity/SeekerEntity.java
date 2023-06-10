@@ -30,7 +30,7 @@ public class SeekerEntity extends HostileEntity implements RangedAttackMob, IAni
 	private final AnimationFactory factory = new AnimationFactory(this);
 	private final double specialAttackDistance = 0.8d;
 	private final int drainCooldown = SpecialValues.TICK_SECOND * 4;
-	private final int dashLength = (int)(SpecialValues.TICK_SECOND * 2.5);
+	private final int dashLength = SpecialValues.TICK_SECOND;
 	private final int dashCooldown = SpecialValues.TICK_SECOND * 8;
 	private final double dashSpeed = 1.8d;
 	private boolean isDashing = false;
@@ -65,13 +65,13 @@ public class SeekerEntity extends HostileEntity implements RangedAttackMob, IAni
 				.add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.7f)
 				.add(EntityAttributes.GENERIC_ARMOR_TOUGHNESS, 4.0f)
 				.add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 3.5f)
-				.add(EntityAttributes.GENERIC_FLYING_SPEED, 2.0f)
+				.add(EntityAttributes.GENERIC_FLYING_SPEED, 3.0f)
 				.add(EntityAttributes.GENERIC_FOLLOW_RANGE, 30.0f);
 	}
 	
 	@Override
 	public void initGoals() {
-		this.goalSelector.add(1, new ProjectileAttackGoal(this, 3.5d, 20, 12.0f));
+		this.goalSelector.add(1, new ProjectileAttackGoal(this, 4.5d, 20, 12.0f));
 		this.goalSelector.add(2, new FlyGoal(this, 1.5d));
 		this.goalSelector.add(3, new LookAtEntityGoal(this, PlayerEntity.class, 16.0f));
 		this.goalSelector.add(4, new LookAroundGoal(this));
@@ -111,7 +111,7 @@ public class SeekerEntity extends HostileEntity implements RangedAttackMob, IAni
 			this.setVelocity(target.getPos()
 					.subtract(this.getPos())
 					.normalize()
-					.multiply(dashSpeed * -0.5));
+					.multiply(dashSpeed * -0.3));
 			return false;
 		}
 		
@@ -120,7 +120,7 @@ public class SeekerEntity extends HostileEntity implements RangedAttackMob, IAni
 	}
 	
 	private boolean regenLogic() {
-		this.heal(0.5f);
+		this.heal(1.0f);
 		return this.getHealth() >= this.getMaxHealth();
 	}
 	

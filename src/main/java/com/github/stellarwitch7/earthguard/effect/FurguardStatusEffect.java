@@ -3,6 +3,7 @@ package com.github.stellarwitch7.earthguard.effect;
 import com.github.stellarwitch7.earthguard.util.SpecialValues;
 import com.github.stellarwitch7.earthguard.util.accessor.IPlayerEntityAccessor;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.AttributeContainer;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
@@ -38,5 +39,22 @@ public class FurguardStatusEffect extends StatusEffect {
 				ticksPassedSinceLastDrain = 0;
 			}
 		}
+	}
+	
+	@Override
+	public void onRemoved(LivingEntity entity, AttributeContainer attributes, int amplifier) {
+		if (entity instanceof PlayerEntity player) {
+			var accessor = (IPlayerEntityAccessor)player;
+			
+			if (player.getHealth() - accessor.earthguard$getBlockedDamage() > 0) {
+				player.setHealth(player.getHealth() - accessor.earthguard$getBlockedDamage());
+			} else {
+				player.setHealth(1.0f);
+			}
+			
+			accessor.earthguard$setBlockedDamage(0.0f);
+		}
+		
+		super.onRemoved(entity, attributes, amplifier);
 	}
 }

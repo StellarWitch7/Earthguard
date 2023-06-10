@@ -5,6 +5,7 @@ import net.minecraft.nbt.NbtCompound;
 
 public interface IPlayerEntityAccessor {
 	float earthguard$getBlockedDamage();
+	void earthguard$setBlockedDamage(float amount);
 	void earthguard$decrementBlockedDamage();
 	void earthguard$decrementHealth();
 	void earthguard$incrementBlockedDamage();
