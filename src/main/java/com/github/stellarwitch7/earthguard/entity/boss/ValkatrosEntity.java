@@ -362,8 +362,6 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 	public void writeCustomDataToNbt(NbtCompound nbt) {
 		super.writeCustomDataToNbt(nbt);
 		
-		nbt.putFloat("health", this.getHealth());
-		
 		DataResult<NbtElement> value =
 				BossPhase.CODEC.encodeStart(NbtOps.INSTANCE,
 						bossPhase);
