@@ -28,8 +28,13 @@ public class FurguardStatusEffect extends StatusEffect {
 	public void applyUpdateEffect(LivingEntity entity, int amplifier) {
 		if (entity instanceof PlayerEntity player) {
 			var accessor = ((IPlayerEntityAccessor)player);
-			ticksPassedSinceLastDrain +=
-					(accessor.earthguard$getBlockedDamage() + 2) / 2;
+			int ticksToAdd = 1;
+			
+			if ((accessor.earthguard$getBlockedDamage() + 2) / 2 > ticksToAdd) {
+				ticksToAdd = (int)(Math.ceil(accessor.earthguard$getBlockedDamage() + 2) / 2);
+			}
+			
+			ticksPassedSinceLastDrain += ticksToAdd;
 			
 			if (ticksPassedSinceLastDrain >= ticksBetweenDrains
 					&& accessor.earthguard$getBlockedDamage() > 0) {

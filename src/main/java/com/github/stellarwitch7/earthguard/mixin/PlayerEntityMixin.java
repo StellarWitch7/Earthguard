@@ -18,14 +18,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
-import net.minecraft.world.event.GameEvent;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Objects;
 
@@ -36,10 +33,8 @@ public abstract class PlayerEntityMixin
 		implements IPlayerEntityAccessor {
 	@Shadow
 	public abstract ItemStack getEquippedStack(EquipmentSlot slot);
-	
 	@Shadow
 	public abstract HungerManager getHungerManager();
-	
 	@Unique
 	private boolean isLycan = false;
 	@Unique
@@ -62,8 +57,15 @@ public abstract class PlayerEntityMixin
 		if (this.hasStatusEffect(ModEffects.FURGUARD)) {
 			if (!source.bypassesArmor() && !source.isFire()
 					&& !source.isFromFalling() && !source.isMagic()) {
-				blockedDamage += amount / this.getStatusEffect(ModEffects.FURGUARD)
-						.getAmplifier();
+				float damageCounted = 1;
+				
+				if (amount / this.getStatusEffect(ModEffects.FURGUARD)
+						.getAmplifier() > damageCounted) {
+					damageCounted = amount / this.getStatusEffect(ModEffects.FURGUARD)
+							.getAmplifier();
+				}
+				
+				blockedDamage += damageCounted;
 				ci.cancel();
 			}
 		}
@@ -93,7 +95,8 @@ public abstract class PlayerEntityMixin
 		EarthguardMod.LOGGER.info("Reading NBT: isLycan = " + isLycan); //Debug
 		
 		earthguard$setMonsterFormTime(nbt.getInt("monsterFormTicks"));
-		EarthguardMod.LOGGER.info("Reading NBT: monsterFormTicks = " + ticksPassedAsMonster
+		EarthguardMod.LOGGER.info("Reading NBT: monsterFormTicks = "
+				+ ticksPassedAsMonster
 				+ " of " + monsterFormLength);
 		
 		NbtElement element = nbt.get("lycanForm");
@@ -110,13 +113,14 @@ public abstract class PlayerEntityMixin
 		EarthguardMod.LOGGER.info("Writing NBT: isLycan = " + isLycan); //Debug
 		
 		nbt.putInt("monsterFormTicks", ticksPassedAsMonster);
-		EarthguardMod.LOGGER.info("Writing NBT: monsterFormTicks = " + ticksPassedAsMonster
+		EarthguardMod.LOGGER.info("Writing NBT: monsterFormTicks = "
+				+ ticksPassedAsMonster
 				+ " of " + monsterFormLength);
 		
 		DataResult<NbtElement> value =
 				LycanForm.CODEC.encodeStart(NbtOps.INSTANCE,
 						lycanForm);
-		NbtElement element = value.resultOrPartial(EarthguardMod.LOGGER::error).orElseThrow();
+		var element = value.resultOrPartial(EarthguardMod.LOGGER::error).orElseThrow();
 		nbt.put("lycanForm", element);
 		EarthguardMod.LOGGER.info("Writing NBT: lycanForm = "
 				+ lycanForm.getId()); //Debug

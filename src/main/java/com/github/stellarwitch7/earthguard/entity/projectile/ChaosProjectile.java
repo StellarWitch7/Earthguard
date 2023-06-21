@@ -30,7 +30,7 @@ public class ChaosProjectile
 		extends ExplosiveProjectileEntity
 		implements IAnimatable, IExplosiveProjectile {
 	private final AnimationFactory factory = new AnimationFactory(this);
-	private Vec3d targetMovement = this.getPos();
+	private Vec3d targetMovement;
 	private boolean isCharged = false;
 	
 	public ChaosProjectile(EntityType<? extends ExplosiveProjectileEntity> entityType,
@@ -58,9 +58,14 @@ public class ChaosProjectile
 	
 	@Override
 	public void tick() {
-		if (this.getVelocity().length() < targetMovement.length() * 0.7) {
+		if (targetMovement != null) {
+			if (this.getVelocity().length() < targetMovement.length() * 0.7) {
+				this.setVelocity(targetMovement);
+			}
+		}
+		
+		if (this.getVelocity().length() > 0.2d) {
 			this.summonLightning();
-			this.setVelocity(targetMovement);
 		}
 		
 		super.tick();

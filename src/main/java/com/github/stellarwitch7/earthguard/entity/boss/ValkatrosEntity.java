@@ -7,10 +7,7 @@ import com.github.stellarwitch7.earthguard.registry.ModEntities;
 import com.github.stellarwitch7.earthguard.util.BossPhase;
 import com.github.stellarwitch7.earthguard.util.SpecialValues;
 import com.mojang.serialization.DataResult;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LightningEntity;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.RangedAttackMob;
 import net.minecraft.entity.ai.control.FlightMoveControl;
 import net.minecraft.entity.ai.control.MoveControl;
@@ -70,7 +67,7 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 	private final double chaosProjectileSpeed = 1.5d;
 	private final MoveControl phaseOneControl;
 	private final MoveControl phaseTwoControl;
-	private BossPhase bossPhase = BossPhase.ONE;
+	private BossPhase bossPhase;
 	private boolean approachTarget = false;
 	private boolean transitioning = false;
 	private boolean isDashing = false;
@@ -85,8 +82,10 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 	
 	public ValkatrosEntity(EntityType<? extends HostileEntity> entityType, World world) {
 		super(entityType, world);
+		this.bossPhase = BossPhase.ONE;
 		this.phaseOneControl = this.moveControl;
 		this.phaseTwoControl = new FlightMoveControl(this, 10, true);
+		this.experiencePoints = 100;
 	}
 	
 	@Override
@@ -138,14 +137,14 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 				this.dashAttack(target);
 				dashCooldownLeft = dashCooldown;
 			} else {
-			
+				this.navigation.startMovingTo(this.getTarget(), 3.0d);
 			}
 		} else if (bossPhase == BossPhase.TWO) {
 			if (!callingLightning) {
 				this.callLightning(target);
 			} else if (random.nextBoolean()) {
 				this.launchChaosProjectile(target);
-			} else if (summonCooldownLeft <= 0) {
+			} else if (summonCooldownLeft <= 0 && !transitioning) {
 				this.summonSeekers();
 				summonCooldownLeft = summonCooldown;
 			}
@@ -266,6 +265,10 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 	public void tick() {
 		super.tick();
 		
+		if (bossPhase == BossPhase.TWO) {
+			this.setNoGravity(true);
+		}
+		
 		if (transitioning) {
 			transitioning = transitionLogic();
 		}
@@ -288,6 +291,12 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 		
 		dashCooldownLeft--;
 		summonCooldownLeft--;
+	}
+	
+	@Override
+	public void move(MovementType movementType, Vec3d movement) {
+		super.move(movementType, movement);
+		this.checkBlockCollision();
 	}
 	
 	@Override
@@ -322,16 +331,15 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 	
 	public void startTransition() {
 		transitioning = true;
-		bossPhase = BossPhase.TWO;
-		this.moveControl = phaseTwoControl;
-		this.navigation = this.createNavigation(world);
-		this.addVelocity(0.0d, 5.0d, 0.0d);
+		this.setBossPhase(BossPhase.TWO);
+		this.addVelocity(0.0d, 2.0d, 0.0d);
 	}
 	
 	public boolean transitionLogic() {
 		this.heal(1.0f);
 		
 		if (this.getHealth() >= this.getMaxHealth()) {
+			this.summonSeekers();
 			return false;
 		}
 		
@@ -359,25 +367,22 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 		DataResult<NbtElement> value =
 				BossPhase.CODEC.encodeStart(NbtOps.INSTANCE,
 						bossPhase);
-		NbtElement element = value.resultOrPartial(EarthguardMod.LOGGER::error).orElseThrow();
+		var element = value.resultOrPartial(EarthguardMod.LOGGER::error).orElseThrow();
 		nbt.put("bossPhase", element);
 	}
 	
 	@Override
 	public void readCustomDataFromNbt(NbtCompound nbt) {
 		super.readCustomDataFromNbt(nbt);
-		
-		if (nbt.contains("health")) {
-			this.setHealth(nbt.getFloat("health"));
-		}
+		var newBossPhase = BossPhase.ONE;
 		
 		if (nbt.contains("bossPhase")) {
 			NbtElement element = nbt.get("bossPhase");
 			DataResult<BossPhase> value = BossPhase.CODEC.parse(NbtOps.INSTANCE, element);
-			bossPhase = value.resultOrPartial(EarthguardMod.LOGGER::error).orElseThrow();
+			newBossPhase = value.resultOrPartial(EarthguardMod.LOGGER::error).orElseThrow();
 		}
 		
-		this.navigation = createNavigation(world);
+		this.setBossPhase(newBossPhase);
 	}
 	
 	@Override
@@ -394,6 +399,17 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 	@Override
 	public boolean canUsePortals() {
 		return false;
+	}
+	
+	public void setBossPhase(BossPhase newPhase) {
+		if (newPhase == BossPhase.ONE) {
+			this.moveControl = phaseOneControl;
+		} else if (newPhase == BossPhase.TWO) {
+			this.moveControl = phaseTwoControl;
+		}
+		
+		bossPhase = newPhase;
+		this.navigation = this.createNavigation(world);
 	}
 	
 	private PlayState predicate(AnimationEvent event) {

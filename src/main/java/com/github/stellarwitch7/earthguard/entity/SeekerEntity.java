@@ -4,6 +4,7 @@ import com.github.stellarwitch7.earthguard.util.SpecialValues;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MovementType;
 import net.minecraft.entity.ai.RangedAttackMob;
 import net.minecraft.entity.ai.control.FlightMoveControl;
 import net.minecraft.entity.ai.goal.*;
@@ -45,6 +46,7 @@ public class SeekerEntity extends HostileEntity implements RangedAttackMob, IAni
 		super(entityType, world);
 		this.moveControl = new FlightMoveControl(this, 10, true);
 		this.setHealth(2.0f);
+		this.experiencePoints = 2;
 		isHealing = true;
 	}
 	
@@ -126,7 +128,10 @@ public class SeekerEntity extends HostileEntity implements RangedAttackMob, IAni
 	
 	@Override
 	public void tick() {
+		this.noClip = true;
 		super.tick();
+		this.noClip = false;
+		this.setNoGravity(true);
 		
 		if (isHealing) {
 			isHealing = regenLogic();
@@ -141,6 +146,12 @@ public class SeekerEntity extends HostileEntity implements RangedAttackMob, IAni
 		
 		dashCooldownLeft--;
 		drainCooldownLeft--;
+	}
+	
+	@Override
+	public void move(MovementType movementType, Vec3d movement) {
+		super.move(movementType, movement);
+		this.checkBlockCollision();
 	}
 	
 	@Override

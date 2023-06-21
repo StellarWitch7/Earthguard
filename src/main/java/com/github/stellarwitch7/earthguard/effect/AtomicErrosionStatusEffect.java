@@ -19,12 +19,17 @@ public class AtomicErrosionStatusEffect extends StatusEffect {
 		if (new Random().nextBoolean()) {
 			return new Random().nextBoolean();
 		}
+		
 		return false;
 	}
 	
 	@Override
 	public void applyUpdateEffect(LivingEntity entity, int amplifier) {
 		if (entity instanceof PlayerEntity player) {
+			if (amplifier <= 0) {
+				amplifier = 1;
+			}
+			
 			double tweakedAmplifier = amplifier * -0.5;
 			Vec3d velocity = player.getVelocity();
 			
