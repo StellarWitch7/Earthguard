@@ -15,6 +15,7 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.mob.HostileEntity;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -30,7 +31,7 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 public class SeekerEntity extends HostileEntity implements RangedAttackMob, IAnimatable {
 	private final AnimationFactory factory = new AnimationFactory(this);
 	private final double specialAttackDistance = 0.8d;
-	private final int drainCooldown = SpecialValues.TICK_SECOND * 4;
+	private final int drainCooldown = SpecialValues.TICK_SECOND * 8;
 	private final int dashLength = SpecialValues.TICK_SECOND;
 	private final int dashCooldown = SpecialValues.TICK_SECOND * 8;
 	private final double dashSpeed = 1.8d;
@@ -41,13 +42,33 @@ public class SeekerEntity extends HostileEntity implements RangedAttackMob, IAni
 	private Vec3d dashVector;
 	private boolean isHealing;
 	private int drainCooldownLeft;
+	private MobEntity parent;
 	
 	public SeekerEntity(EntityType<? extends HostileEntity> entityType, World world) {
 		super(entityType, world);
 		this.moveControl = new FlightMoveControl(this, 10, true);
 		this.setHealth(2.0f);
 		this.experiencePoints = 2;
-		isHealing = true;
+		this.isHealing = true;
+	}
+	
+	public void assignParent(MobEntity parent) {
+		this.parent = parent;
+		this.initCustomGoals();
+	}
+	
+	@Override
+	public void initGoals() {
+		this.goalSelector.add(1, new ProjectileAttackGoal(this, 4.5d, 20, 12.0f));
+		this.goalSelector.add(3, new FlyGoal(this, 1.5d));
+		this.goalSelector.add(4, new LookAtEntityGoal(this, PlayerEntity.class, 16.0f));
+		this.goalSelector.add(5, new LookAroundGoal(this));
+		
+		this.targetSelector.add(1, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
+	}
+	
+	public void initCustomGoals() {
+		this.goalSelector.add(2, new FollowMobGoal(parent, 4.5d, 3.0f, 30.0f));
 	}
 	
 	@Override
@@ -69,16 +90,6 @@ public class SeekerEntity extends HostileEntity implements RangedAttackMob, IAni
 				.add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 3.5f)
 				.add(EntityAttributes.GENERIC_FLYING_SPEED, 3.0f)
 				.add(EntityAttributes.GENERIC_FOLLOW_RANGE, 30.0f);
-	}
-	
-	@Override
-	public void initGoals() {
-		this.goalSelector.add(1, new ProjectileAttackGoal(this, 4.5d, 20, 12.0f));
-		this.goalSelector.add(2, new FlyGoal(this, 1.5d));
-		this.goalSelector.add(3, new LookAtEntityGoal(this, PlayerEntity.class, 16.0f));
-		this.goalSelector.add(4, new LookAroundGoal(this));
-		
-		this.targetSelector.add(1, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
 	}
 	
 	@Override

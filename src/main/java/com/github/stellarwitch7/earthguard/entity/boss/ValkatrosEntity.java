@@ -152,39 +152,21 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 	}
 	
 	private void summonSeekers() {
-		for (int i = 0; i < seekerSpawnCount * 2; i++) {
-			var rand = ThreadLocalRandom.current();
-			final int max = 16;
-			final int min = max * -1;
-			var bolt = new LightningEntity(EntityType.LIGHTNING_BOLT, world);
-			Vec3d vector = new Vec3d(rand.nextDouble(this.getPos().x + min,
-					this.getPos().x + max + 1), rand.nextDouble(this.getPos().y + min,
-					this.getPos().y + max + 1), rand.nextDouble(this.getPos().z + min,
-					this.getPos().z + max + 1));
-			bolt.setPosition(vector);
-			world.spawnEntity(bolt);
-		}
-		
 		for (int i = 0; i < seekerSpawnCount; i++) {
 			var rand = ThreadLocalRandom.current();
 			final int max = 12;
 			final int min = max * -1;
+			var bolt = new LightningEntity(EntityType.LIGHTNING_BOLT, world);
 			var newSeeker = new SeekerEntity(ModEntities.SEEKER, world);
-			Vec3d vector = new Vec3d(rand.nextDouble(this.getPos().x + min,
-					this.getPos().x + max + 1), rand.nextDouble(this.getPos().y + min,
-					this.getPos().y + max + 1), rand.nextDouble(this.getPos().z + min,
-					this.getPos().z + max + 1));
+			newSeeker.assignParent(this);
+			Vec3d vector = new Vec3d(rand.nextDouble(this.getPos().x + min, this.getPos().x + max + 1),
+					rand.nextDouble(this.getPos().y + min, this.getPos().y + max + 1) + 8,
+					rand.nextDouble(this.getPos().z + min, this.getPos().z + max + 1));
+			bolt.setPosition(vector);
 			newSeeker.setPosition(vector);
+			world.spawnEntity(bolt);
 			world.spawnEntity(newSeeker);
 		}
-	}
-	
-	private void detonate(float strength) {
-		world.createExplosion(this,
-				this.getX(),
-				this.getY(),
-				this.getZ(),
-				strength, Explosion.DestructionType.DESTROY);
 	}
 	
 	private void dashAttack(LivingEntity target) {
@@ -221,7 +203,7 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 		var newProjectile = new ChaosProjectile(ModEntities.CHAOS_PROJECTILE, world);
 		Vec3d vector = this.getPos();
 		
-		if (target.getPos().y <= this.getPos().y) {
+		if (target.getPos().y <= this.getPos().y - 2) {
 			vector = vector.subtract(0.0d, 3.0d, 0.0d);
 		} else {
 			vector = vector.add(0.0d, 3.0d, 0.0d);
@@ -267,6 +249,8 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 		
 		if (bossPhase == BossPhase.TWO) {
 			this.setNoGravity(true);
+		} else if (bossPhase == BossPhase.ONE) {
+			this.setNoGravity(false);
 		}
 		
 		if (transitioning) {
@@ -373,13 +357,13 @@ public class ValkatrosEntity extends HostileEntity implements RangedAttackMob, I
 	public void readCustomDataFromNbt(NbtCompound nbt) {
 		super.readCustomDataFromNbt(nbt);
 		var newBossPhase = BossPhase.ONE;
-		
+
 		if (nbt.contains("bossPhase")) {
 			NbtElement element = nbt.get("bossPhase");
 			DataResult<BossPhase> value = BossPhase.CODEC.parse(NbtOps.INSTANCE, element);
 			newBossPhase = value.resultOrPartial(EarthguardMod.LOGGER::error).orElseThrow();
 		}
-		
+
 		this.setBossPhase(newBossPhase);
 	}
 	
